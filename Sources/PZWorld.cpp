@@ -83,6 +83,7 @@ namespace PZ
 			}
 
 			_vrCamera = new RN::VRCamera(_vrWindow, monitorPass, _msaa, debugWindow);
+			_mainCamera = _vrCamera;
 		}
 		else if(RN::Renderer::GetActiveRenderer()->GetMainWindow())
 		{
@@ -102,8 +103,11 @@ namespace PZ
 			resolvePass->AddRenderPass(copyPass);
 
 			RN::Camera *camera = new RN::Camera();
+			_mainCamera = camera;
 			camera->GetRenderPass()->SetFramebuffer(msaaFramebuffer);
 			camera->GetRenderPass()->AddRenderPass(resolvePass);
+			camera->GetRenderPass()->SetClearColor(RN::Color::Black());
+			camera->GetRenderPass()->SetFlags(RN::RenderPass::Flags::ClearColor|RN::RenderPass::Flags::ClearDepthStencil);
 			
 			_shadowCamera = camera;
 			AddNode(camera);
