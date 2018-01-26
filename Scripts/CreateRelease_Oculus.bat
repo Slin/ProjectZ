@@ -1,0 +1,2 @@
+cd ..
+robocopy "Builds\Oculus\Build\Release" "Releases\Oculus" /S /XF *.lib *.exp %CD%\Builds\Oculus\Build\Release\Swords\RayneOgg.dll /XD RayneBullet RayneOculus RayneSteamAudio RayneENet RayneVR RayneOpenVR

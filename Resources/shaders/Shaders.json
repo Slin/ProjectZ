@@ -1,0 +1,17 @@
+[
+	{
+		"file~d3d12": "/shaders/PostProcessing.hlsl",
+		"file~metal": "/shaders/PostProcessing.metal",
+		"shaders":
+		[
+			{
+				"name": "pp_vertex",
+				"type": "vertex"
+			},
+			{
+				"name": "pp_blit_fragment",
+				"type": "fragment"
+			}
+		]
+	}
+]
