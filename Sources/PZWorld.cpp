@@ -112,8 +112,8 @@ namespace PZ
 			_shadowCamera = camera;
 			AddNode(camera);
 
-			camera->SetPosition(RN::Vector3(185.0, 40.0, -183.0));
-			camera->SetRotation(RN::Vector3(0.0f, -90.0f, 0.0f));
+			camera->SetPosition(RN::Vector3(2.0, 1.8, 2.0));
+			camera->SetRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 		}
 
 		RN::SteamAudioDevice *foundOutputAudioDevice = nullptr;
@@ -167,9 +167,9 @@ namespace PZ
 				sunLight->ActivateShadows(RN::ShadowParameter(_shadowCamera));
 		}
 
-//		RN::Model *groundModel = RN::Model::WithName(RNCSTR("models/levels/castle/castle.sgm"));
-//		RN::Entity *level = new RN::Entity(groundModel);
-//		AddNode(level->Autorelease());
+		RN::Model *groundModel = RN::Model::WithName(RNCSTR("models/levels/testlevel.sgm"));
+		RN::Entity *level = new RN::Entity(groundModel);
+		AddNode(level->Autorelease());
 
 		//TODO: Mesh braucht eine optionale kopie im RAM, damit das trianglemeshshape korrekt funktioniert
 //		RN::PhysXMaterial *groundPhysicsMaterial = new RN::PhysXMaterial();

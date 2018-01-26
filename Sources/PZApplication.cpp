@@ -134,7 +134,7 @@ namespace PZ
 		{
 			SetupPreviewWindow();
 		}
-		World *world = new World(_vrWindow, _window, _vrWindow?true:false, _vrWindow?4:0, false);
+		World *world = new World(_vrWindow, _window, false, 4, false);
 #else
 		SetupPreviewWindow();
 		World *world = new World(_isClient, _isServer, _vrWindow, _window, true, 8, false);
