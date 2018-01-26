@@ -1,21 +1,18 @@
 //
-//  SGWorld.cpp
-//  Sword Game
+//  PZWorld.cpp
+//  Project: Z
 //
-//  Copyright 2017 by Überpixel. All rights reserved.
+//  Copyright 2018 by Überpixel. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#define LEVEL_COLLISION_CHANGED 0
-
-#include "SGWorld.h"
-#include "../../../Rayne/Modules/PhysX/RNPhysXShape.h"
+#include "PZWorld.h"
 
 #if RN_PLATFORM_WINDOWS
 #include "RNOculusWindow.h"
 #endif
 
-namespace SG
+namespace PZ
 {
 	World *World::_sharedInstance = nullptr;
 
@@ -26,20 +23,12 @@ namespace SG
 
 	void World::Exit()
 	{
-		Platform::Shutdown();
-		google::protobuf::ShutdownProtobufLibrary();
-		GetSharedInstance()->RemoveAttachment(GetSharedInstance()->GetPhysicsWorld());
-		GetSharedInstance()->GetPhysicsWorld()->Release();
 		exit(0);
 		//RN::Kernel::GetSharedInstance()->Exit();
 	}
 
-	World::World(bool isClient, bool isServer, RN::VRWindow *vrWindow, RN::Window *window, bool hasShadows, RN::uint8 msaa, bool debug) : _isClient(isClient), _isServer(isServer), _window(nullptr), _vrWindow(nullptr), _hasShadows(hasShadows), _msaa(msaa), _debug(debug), _audioWorld(nullptr), _networkWorld(nullptr), _networkHost(nullptr), _vrCamera(nullptr), _speech(nullptr), _isPaused(false), _shadowCamera(nullptr)
+	World::World(RN::VRWindow *vrWindow, RN::Window *window, bool hasShadows, RN::uint8 msaa, bool debug) : _window(nullptr), _vrWindow(nullptr), _hasShadows(hasShadows), _msaa(msaa), _debug(debug), _audioWorld(nullptr), _vrCamera(nullptr), _isPaused(false), _shadowCamera(nullptr)
 	{
-		GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-		Platform::Initialize();
-
 		if (vrWindow)
 			_vrWindow = vrWindow->Retain();
 
@@ -57,8 +46,7 @@ namespace SG
 		
 		InitializePlatform();
 
-		_physicsWorld = new RN::NewtonWorld(RN::Vector3(0.0, -9.81, 0.0), true);
-		_physicsWorld->SetSubsteps(4);
+		_physicsWorld = new RN::PhysXWorld(RN::Vector3(0.0, -9.81, 0.0), true);
 		AddAttachment(_physicsWorld);
 
 		if(_vrCamera)
@@ -71,64 +59,12 @@ namespace SG
 			AddNode(_vrCamera);
 		}
 
-		InitializeNetworking();
 		CreateTestLevel();
-
-		if(_isServer)
-		{
-			ObjectManager::CreateSceneNodeForType(0, SGNetworking::ObjectState::Type::ObjectState_Type_DUMMY, RN::Vector3(185.0, 0.0, -180.0));
-
-			for(int i = 0; i < 5; i++)
-			{
-				SGNetworking::ObjectState_Type type = static_cast<SGNetworking::ObjectState_Type>((i % 5) + 2);
-				ObjectManager::CreateSceneNodeForType(0, type, RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomVector3Range(RN::Vector3(180.0f, 0.3f, -180.0f), RN::Vector3(190.0f, 0.5f, -170.0f)));
-			}
-
-			if(_isClient)
-			{
-				ObjectManager::CreateSceneNodeForType(0, SGNetworking::ObjectState::Type::ObjectState_Type_PLAYER, RN::Vector3(185.0, 0.0, -183.0));
-			}
-		}
-	}
-
-	void World::InitializeNetworking()
-	{
-		if(_isServer || _isClient)
-		{
-			_networkWorld = new RN::ENetWorld();
-			AddAttachment(_networkWorld);
-
-			RN::uint32 port = 12345;
-			if(RN::Kernel::GetSharedInstance()->GetArguments().HasArgumentAndValue("port", 0))
-			{
-				RN::ArgumentParser::Argument argument = RN::Kernel::GetSharedInstance()->GetArguments().ParseArgument("port", 0);
-				RN::String *portString = argument.GetValue();
-				port = strtol(portString->GetUTF8String(), nullptr, 10);
-			}
-
-			RN::String *ip = RNCSTR("localhost");
-			if(RN::Kernel::GetSharedInstance()->GetArguments().HasArgumentAndValue("ip", 0))
-			{
-				RN::ArgumentParser::Argument argument = RN::Kernel::GetSharedInstance()->GetArguments().ParseArgument("ip", 0);
-				ip = argument.GetValue();
-			}
-
-			if(_isServer)
-			{
-				_networkHost = new Server(port);
-			}
-			else
-			{
-				Client *client = new Client();
-				client->Connect(ip, port);
-				_networkHost = client;
-			}
-		}
 	}
 
 	void World::InitializePlatform()
 	{
-		if(_isClient)
+		if(_vrWindow)
 		{
 			RN::PostProcessingStage *monitorPass = nullptr;
 			if(_window)
@@ -177,7 +113,6 @@ namespace SG
 		}
 
 		RN::SteamAudioDevice *foundOutputAudioDevice = nullptr;
-		RN::SteamAudioDevice *foundInputAudioDevice = nullptr;
 
 #if RN_PLATFORM_WINDOWS
 		if(_vrWindow && _vrWindow->IsKindOfClass(RN::OculusWindow::GetMetaClass()))
@@ -192,10 +127,6 @@ namespace SG
 					if(audioDevice->id->IsEqual(oculusOutputAudioDeviceID))
 					{
 						foundOutputAudioDevice = audioDevice;
-					}
-					if(audioDevice->id->IsEqual(oculusInputAudioDeviceID))
-					{
-						foundInputAudioDevice = audioDevice->Retain();
 						stop = true;
 					}
 				});
@@ -208,14 +139,6 @@ namespace SG
 			foundOutputAudioDevice = RN::SteamAudioWorld::GetDefaultOutputDevice();
 		}
 
-		if(!foundInputAudioDevice)
-		{
-			foundInputAudioDevice = RN::SteamAudioWorld::GetDefaultInputDevice();
-		}
-
-		if(!_isClient)
-			foundInputAudioDevice = nullptr;
-
 		if(foundOutputAudioDevice)
 		{
 			_audioWorld = new RN::SteamAudioWorld(foundOutputAudioDevice);
@@ -225,11 +148,6 @@ namespace SG
 				_audioWorld->SetListener(_vrCamera->GetHead());
 			else if(_shadowCamera)
 				_audioWorld->SetListener(_shadowCamera);
-		}
-
-		if(foundOutputAudioDevice && foundInputAudioDevice)
-		{
-			_speech = new Speech(foundInputAudioDevice);
 		}
 	}
 
@@ -245,13 +163,13 @@ namespace SG
 				sunLight->ActivateShadows(RN::ShadowParameter(_shadowCamera));
 		}
 
-		RN::Model *groundModel = RN::Model::WithName(RNCSTR("models/levels/castle/castle.sgm"));
-		_ground = new RN::Entity(groundModel);
-		AddNode(_ground->Autorelease());
+//		RN::Model *groundModel = RN::Model::WithName(RNCSTR("models/levels/castle/castle.sgm"));
+//		RN::Entity *level = new RN::Entity(groundModel);
+//		AddNode(level->Autorelease());
 
 		//TODO: Mesh braucht eine optionale kopie im RAM, damit das trianglemeshshape korrekt funktioniert
 //		RN::PhysXMaterial *groundPhysicsMaterial = new RN::PhysXMaterial();
-#if LEVEL_COLLISION_CHANGED == 1
+/*#if LEVEL_COLLISION_CHANGED == 1
 		RN::NewtonTriangleMeshShape *levelShape = RN::NewtonTriangleMeshShape::WithModel(groundModel);
 		levelShape->SerializeToFile(RNCSTR("level_collision.newton"));
 #else
@@ -259,9 +177,9 @@ namespace SG
 #endif
 		RN::NewtonRigidBody *groundBody = RN::NewtonRigidBody::WithShape(levelShape, 0.0f);
 		groundBody->SetCollisionFilter(CollisionType::Level, CollisionType::All);
-		_ground->AddAttachment(groundBody);
+		level->AddAttachment(groundBody);*/
 
-		if(_audioWorld)
+/*		if(_audioWorld)
 		{
 			RN::SteamAudioMaterial groundAudioMaterial;
 			groundAudioMaterial.lowFrequencyAbsorption = 0.2f;
@@ -287,13 +205,13 @@ namespace SG
 				RN::SteamAudioGeometry groundAudioGeometry;
 				groundAudioGeometry.mesh = lodStage->GetMeshAtIndex(i);
 				groundAudioGeometry.materialIndex = (i == 0) ? 0 : 1;
-				groundAudioGeometry.position = _ground->GetWorldPosition();
-				groundAudioGeometry.scale = _ground->GetWorldScale();
-				groundAudioGeometry.rotation = _ground->GetWorldRotation();
+				groundAudioGeometry.position = level->GetWorldPosition();
+				groundAudioGeometry.scale = level->GetWorldScale();
+				groundAudioGeometry.rotation = level->GetWorldRotation();
 				_audioWorld->AddStaticGeometry(groundAudioGeometry);
 			}
 
-			_audioWorld->UpdateScene();
+			_audioWorld->UpdateScene();*/
 
 /*			if(_isClient)
 			{
@@ -313,18 +231,7 @@ namespace SG
 					AddNode(radioEntity);
 				}
 			}*/
-		}
-
-		//DRAGON!!!!
-		RN::Model *dragonModel = RN::Model::WithName(RNCSTR("models/creatures/dragon.sgm"));
-		RN::Entity *dragon = new RN::Entity(dragonModel);
-		AddNode(dragon->Autorelease());
-		dragon->SetWorldPosition(RN::Vector3(185.0, 0.0, -183.0+40.0f));
-		dragon->SetWorldRotation(RN::Vector3(30.0f, 0.0, 0.0));
-
-		RN::Entity *skyEntity = new RN::Entity(RN::Model::WithSkycube(RNCSTR("models/skies/sky_left.png"), RNCSTR("models/skies/sky_front.png"), RNCSTR("models/skies/sky_right.png"), RNCSTR("models/skies/sky_back.png"), RNCSTR("models/skies/sky_up.png"), RNCSTR("models/skies/sky_down.png")));
-		skyEntity->SetScale(RN::Vector3(50000.0f));
-		AddNode(skyEntity->Autorelease());
+//		}
 	}
 
 	void World::UpdateForWindowSize() const
@@ -361,13 +268,6 @@ namespace SG
 		RN::Scene::WillUpdate(delta);
 		UpdateForWindowSize();
 
-		Platform::HandleEvents();
-
-		if(_speech)
-		{
-			_speech->Update(delta);
-		}
-
 		if(_vrCamera)
 		{
 			if(_vrCamera->GetHMDTrackingState().mode == RN::VRHMDTrackingState::Mode::Paused)
@@ -387,30 +287,6 @@ namespace SG
 		if(RN::InputManager::GetSharedInstance()->IsControlToggling(RNCSTR("ESC")))
 		{
 			Exit();
-		}
-		
-		if(GetIsServer())
-		{
-			bool didSpawnSomething = false;
-			if(RN::InputManager::GetSharedInstance()->IsControlToggling(RNCSTR("1")))
-			{
-				didSpawnSomething = true;
-				if(!_didSpawnSomething)
-				{
-					ObjectManager::CreateSceneNodeForType(0, SGNetworking::ObjectState::Type::ObjectState_Type_SWORD, RN::Vector3(185.0f, 0.5f, -185.0f));
-				}
-			}
-			
-			if(RN::InputManager::GetSharedInstance()->IsControlToggling(RNCSTR("2")))
-			{
-				didSpawnSomething = true;
-				if(!_didSpawnSomething)
-				{
-					ObjectManager::CreateSceneNodeForType(0, SGNetworking::ObjectState::Type::ObjectState_Type_SHIELD, RN::Vector3(185.0f, 0.5f, -185.0f));
-				}
-			}
-			
-			_didSpawnSomething = didSpawnSomething;
 		}
 	}
 }

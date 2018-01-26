@@ -1,13 +1,13 @@
 //
-//  SGApplication.cpp
-//  Sword Game
+//  PZApplication.cpp
+//  Project: Z
 //
-//  Copyright 2017 by Überpixel. All rights reserved.
+//  Copyright 2018 by Überpixel. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#include "SGApplication.h"
-#include "SGWorld.h"
+#include "PZApplication.h"
+#include "PZWorld.h"
 
 #if RN_PLATFORM_WINDOWS
 #include "RNOculusWindow.h"
@@ -16,7 +16,7 @@
 #include "RNOpenVRWindow.h"
 #endif
 
-namespace SG
+namespace PZ
 {
 	Application::Application() : _vrWindow(nullptr), _window(nullptr)
 	{
@@ -98,14 +98,7 @@ namespace SG
 
 	void Application::WillFinishLaunching(RN::Kernel *kernel)
 	{
-		_isServer = RN::Kernel::GetSharedInstance()->GetArguments().HasArgument("server", 0);
-		_isClient = RN::Kernel::GetSharedInstance()->GetArguments().HasArgument("client", 0);
-		
-		if(!_isServer && !_isClient)
-			_isServer = true;
-
-		if(_isClient)
-			SetupVR();
+//		SetupVR();
 
 		RN::Application::WillFinishLaunching(kernel);
 		RN::Shader::Sampler::SetDefaultAnisotropy(16);
@@ -141,7 +134,7 @@ namespace SG
 		{
 			SetupPreviewWindow();
 		}
-		World *world = new World(_isClient, _isServer, _vrWindow, _window, _vrWindow?true:false, _vrWindow?4:0, false);
+		World *world = new World(_vrWindow, _window, _vrWindow?true:false, _vrWindow?4:0, false);
 #else
 		SetupPreviewWindow();
 		World *world = new World(_isClient, _isServer, _vrWindow, _window, true, 8, false);

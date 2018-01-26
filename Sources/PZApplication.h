@@ -1,13 +1,13 @@
 //
-//  SGApplication.h
-//  Sword Game
+//  PZApplication.h
+//  Project Z
 //
-//  Copyright 2017 by Überpixel. All rights reserved.
+//  Copyright 2018 by Überpixel. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#ifndef __SWORD_GAME_APPLICATION_H_
-#define __SWORD_GAME_APPLICATION_H_
+#ifndef __PROJECT_Z_APPLICATION_H_
+#define __PROJECT_Z_APPLICATION_H_
 
 #include <Rayne.h>
 
@@ -18,7 +18,7 @@ namespace RN
 	class VRWindow;
 }
 
-namespace SG
+namespace PZ
 {
 	class Application : public RN::Application
 	{
@@ -38,10 +38,8 @@ namespace SG
 		void SetupPreviewWindow();
 		RN::VRWindow *_vrWindow;
 		RN::Window *_window;
-		bool _isClient;
-		bool _isServer;
 	};
 }
 
 
-#endif /* __SWORD_GAME_APPLICATION_H_ */
+#endif /* __PROJECT_Z_APPLICATION_H_ */

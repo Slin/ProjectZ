@@ -1,5 +1,5 @@
 #include <Rayne.h>
-#include "SGApplication.h"
+#include "PZApplication.h"
 
 #if RN_BUILD_RELEASE
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
@@ -11,5 +11,5 @@ int main(int argc, const char *argv[])
 //	_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF);
 #endif
 
-	RN::Initialize(argc, argv, new SG::Application());
+	RN::Initialize(argc, argv, new PZ::Application());
 }
