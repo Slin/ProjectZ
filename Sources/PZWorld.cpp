@@ -166,7 +166,7 @@ namespace PZ
 				sunLight->ActivateShadows(RN::ShadowParameter(_shadowCamera));
 		}
 
-		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/levels/testlevel.sgm"));
+		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/levels/level1.sgm"));
 		RN::Entity *level = new RN::Entity(levelModel);
 		AddNode(level->Autorelease());
 
