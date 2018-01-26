@@ -10,6 +10,7 @@
 #define __PROJECT_Z_PLAYER_H_
 
 #include <Rayne.h>
+#include <RNPhysXWorld.h>
 
 namespace PZ
 {
@@ -17,13 +18,15 @@ namespace PZ
 	class Player : public RN::SceneNode
 	{
 	public:
-		Player();
+		Player(RN::SceneNode *camera);
 		~Player();
 		
 		void Update(float delta) override;
 
-	protected:
-		
+	private:
+		RN::SceneNode *_camera;
+		RN::PhysXKinematicController *_controller;
+		RN::InputDevice *_gamepad;
 	};
 }
 

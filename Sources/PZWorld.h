@@ -22,6 +22,14 @@ namespace PZ
 	class World : public RN::Scene
 	{
 	public:
+		enum CollisionType
+		{
+			Level = 1 << 0,
+			Character = 1 << 1,
+			
+			All = 0xffffffff
+		};
+		
 		static World *GetSharedInstance();
 		static void Exit();
 
@@ -31,6 +39,7 @@ namespace PZ
 		RN::SteamAudioWorld *GetAudioWorld() const { return _audioWorld; }
 		RN::ShaderLibrary *GetShaderLibrary() const { return _shaderLibrary; }
 		RN::SceneNode *GetCamera() const { return _mainCamera; }
+		Player *GetPlayer() const { return _player; }
 
 	protected:
 		void WillBecomeActive() override;
@@ -43,6 +52,7 @@ namespace PZ
 
 		RN::ShaderLibrary *_shaderLibrary;
 
+		Player *_player;
 		RN::Camera *_shadowCamera;
 		RN::VRCamera *_vrCamera;
 		RN::SceneNode *_mainCamera;

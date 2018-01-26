@@ -58,7 +58,10 @@ namespace PZ
 			_vrCamera->GetHead()->AddChild(_shadowCamera->Autorelease());
 			AddNode(_vrCamera);
 		}
-
+		
+		_player = new Player(_mainCamera);
+		AddNode(_player->Autorelease());
+		_player->SetWorldPosition(RN::Vector3(2.0f, 2.0f, 2.0f));
 		CreateTestLevel();
 	}
 
@@ -110,10 +113,6 @@ namespace PZ
 			camera->GetRenderPass()->SetFlags(RN::RenderPass::Flags::ClearColor|RN::RenderPass::Flags::ClearDepthStencil);
 			
 			_shadowCamera = camera;
-			AddNode(camera);
-
-			camera->SetPosition(RN::Vector3(2.0, 1.8, 2.0));
-			camera->SetRotation(RN::Vector3(0.0f, 0.0f, 0.0f));
 		}
 
 		RN::SteamAudioDevice *foundOutputAudioDevice = nullptr;
@@ -167,21 +166,16 @@ namespace PZ
 				sunLight->ActivateShadows(RN::ShadowParameter(_shadowCamera));
 		}
 
-		RN::Model *groundModel = RN::Model::WithName(RNCSTR("models/levels/testlevel.sgm"));
-		RN::Entity *level = new RN::Entity(groundModel);
+		RN::Model *levelModel = RN::Model::WithName(RNCSTR("models/levels/testlevel.sgm"));
+		RN::Entity *level = new RN::Entity(levelModel);
 		AddNode(level->Autorelease());
 
 		//TODO: Mesh braucht eine optionale kopie im RAM, damit das trianglemeshshape korrekt funktioniert
-//		RN::PhysXMaterial *groundPhysicsMaterial = new RN::PhysXMaterial();
-/*#if LEVEL_COLLISION_CHANGED == 1
-		RN::NewtonTriangleMeshShape *levelShape = RN::NewtonTriangleMeshShape::WithModel(groundModel);
-		levelShape->SerializeToFile(RNCSTR("level_collision.newton"));
-#else
-		RN::NewtonShape *levelShape = RN::NewtonTriangleMeshShape::WithFile(RNCSTR("level_collision.newton"));
-#endif
-		RN::NewtonRigidBody *groundBody = RN::NewtonRigidBody::WithShape(levelShape, 0.0f);
-		groundBody->SetCollisionFilter(CollisionType::Level, CollisionType::All);
-		level->AddAttachment(groundBody);*/
+		RN::PhysXMaterial *levelPhysicsMaterial = new RN::PhysXMaterial();
+		RN::PhysXCompoundShape *levelShape = RN::PhysXCompoundShape::WithModel(levelModel, levelPhysicsMaterial, true);
+		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
+		levelBody->SetCollisionFilter(CollisionType::Level, CollisionType::All);
+		level->AddAttachment(levelBody);
 
 /*		if(_audioWorld)
 		{
