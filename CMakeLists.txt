@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 2.8.4)
 project(ProjectZ)
 
 option(RN_BUILD_BULLET_MODULE "Build the Bullet physics module" OFF)
-option(RN_BUILD_NEWTON_MODULE "Build the PhysX physics module" ON)
+option(RN_BUILD_PHYSX_MODULE "Build the PhysX physics module" ON)
 option(RN_BUILD_ASSIMP_MODULE "Build the Assimp module" OFF)
 option(RN_BUILD_STEAMAUDIO_MODULE "Build the Steam Audio module" ON)
 option(RN_BUILD_OPENAL_MODULE "Build the OpenAL module" OFF)
-option(RN_BUILD_ENET_MODULE "Build the ENet module" ON)
+option(RN_BUILD_ENET_MODULE "Build the ENet module" OFF)
 option(RN_BUILD_SAMPLES "Enable building the sample projects" OFF)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Build)
