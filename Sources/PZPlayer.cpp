@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain())
+	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _gamepad(nullptr)
 	{
 		AddChild(camera);
 		camera->SetPosition(RN::Vector3(0.0f, 0.9f, 0.0f));
