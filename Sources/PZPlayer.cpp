@@ -14,10 +14,11 @@ namespace PZ
 	Player::Player(RN::SceneNode *camera) : _camera(camera->Retain()), _gamepad(nullptr)
 	{
 		AddChild(camera);
-		camera->SetPosition(RN::Vector3(0.0f, 0.9f, 0.0f));
+		camera->SetPosition(RN::Vector3(0.0f, 1.8f, 0.0f));
 		
 		RN::PhysXMaterial *physicsMaterial = new RN::PhysXMaterial();
-		_controller = new RN::PhysXKinematicController(0.4f, 1.0f, physicsMaterial->Autorelease());
+		_controller = new RN::PhysXKinematicController(0.25f, 1.1f, physicsMaterial->Autorelease());
+		_controller->SetPositionOffset(_controller->GetFeetOffset());
 		_controller->SetCollisionFilter(World::CollisionType::Character, World::CollisionType::Level | World::CollisionType::Character);
 		AddAttachment(_controller);
 		
