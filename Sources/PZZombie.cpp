@@ -80,7 +80,7 @@ namespace PZ
 
 		RN::Vector3 checkFrom = _previousPosition + RN::Vector3(0.0f, 1.0f, 0.0f);
 		RN::Vector3 checkTo = GetWorldPosition() + RN::Vector3(0.0f, 1.0f, 0.0f);
-		if ((checkFrom - checkTo).GetLength() > 0) {
+		if ((checkFrom - checkTo).GetLength() > 0.001f) {
 			RN::PhysXContactInfo hit = World::GetSharedInstance()->GetPhysicsWorld()->CastRay(checkFrom, checkTo);
 			if (hit.distance > -0.5f)
 			{
