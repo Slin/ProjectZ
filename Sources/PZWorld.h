@@ -18,6 +18,7 @@
 
 #include "PZPlayer.h"
 #include "PZZombie.h"
+#include "PZDoor.h"
 
 namespace PZ
 {

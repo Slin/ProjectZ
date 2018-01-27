@@ -27,7 +27,6 @@ namespace PZ
 		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm"));
 		_zombie = new RN::Entity(model);
 		AddChild(_zombie->Autorelease());
-		//_zombie->SetPosition(RN::Vector3(0.0, 1.0, 0.0));
 	}
 	
 	Zombie::~Zombie()
