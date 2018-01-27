@@ -24,10 +24,10 @@ namespace PZ
 		_navigationAgent = new RN::RecastAgent(settings);
 		AddAttachment(_navigationAgent);
 		
-		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/testzombie.sgm"));
-		RN::Entity *entity = new RN::Entity(model);
-		AddChild(entity->Autorelease());
-		entity->SetPosition(RN::Vector3(0.0, 1.0, 0.0));
+		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm"));
+		_zombie = new RN::Entity(model);
+		AddChild(_zombie->Autorelease());
+		//_zombie->SetPosition(RN::Vector3(0.0, 1.0, 0.0));
 	}
 	
 	Zombie::~Zombie()
@@ -40,5 +40,13 @@ namespace PZ
 		RN::SceneNode::Update(delta);
 		
 		_navigationAgent->SetTarget(World::GetSharedInstance()->GetPlayer()->GetWorldPosition(), RN::Vector3(5.0f));
+		
+		RN::Vector3 lookDir = GetWorldPosition()-_previousPosition;
+		if(lookDir.GetLength() > 0.01f)
+		{
+			RN::Quaternion lookatRotation = RN::Quaternion::WithLookAt(-lookDir);
+			_zombie->SetWorldRotation(lookatRotation);
+		}
+		_previousPosition = GetWorldPosition();
 	}
 }
