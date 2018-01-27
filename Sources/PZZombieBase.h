@@ -28,6 +28,11 @@ namespace PZ
 		RN::RecastAgent *_navigationAgent;
 		RN::Vector3 _previousPosition;
 		//		RN::PhysXKinematicController *_controller;
+
+		bool _following;
+		float _followTime;
+		RN::Vector3 _spawnPoint;
+		bool _storeSpawnPoint;
 	};
 }
 

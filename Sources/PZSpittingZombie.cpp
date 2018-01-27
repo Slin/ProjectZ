@@ -54,8 +54,14 @@ namespace PZ
 			}
 		}
 
-		float dist = (player->GetPosition() - GetPosition()).GetLength();
-		bool spitting = !player->IsDead() && dist < 3.0f;
+		bool spitting = !player->IsDead();
+		if (spitting) {
+			float dist = (player->GetPosition() - GetPosition()).GetLength();
+			spitting = dist < 3.0f;
+		}
+		if (spitting) {
+			spitting = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition());
+		}
 		if (!anyActive && !spitting) {
 			_spitNextTime = 0.5f;
 			return;

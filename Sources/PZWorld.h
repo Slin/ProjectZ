@@ -45,6 +45,8 @@ namespace PZ
 		RN::SceneNode *GetCamera() const { return _mainCamera; }
 		Player *GetPlayer() const { return _player; }
 
+		bool IsPlayerVisibleFrom(RN::Vector3);
+
 	protected:
 		void WillBecomeActive() override;
 

@@ -27,6 +27,9 @@ namespace PZ
 		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm"));
 		_zombie = new RN::Entity(model);
 		AddChild(_zombie->Autorelease());
+
+		_following = false;
+		_storeSpawnPoint = true;
 	}
 
 	ZombieBase::~ZombieBase()
@@ -36,16 +39,37 @@ namespace PZ
 
 	void ZombieBase::Update(float delta)
 	{
+		if (_storeSpawnPoint) {
+			_spawnPoint = GetWorldPosition();
+			_storeSpawnPoint = false;
+		}
+
 		RN::SceneNode::Update(delta);
 
-		_navigationAgent->SetTarget(World::GetSharedInstance()->GetPlayer()->GetWorldPosition(), RN::Vector3(5.0f));
-
-		RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
-		if (lookDir.GetLength() > 0.01f)
-		{
-			RN::Quaternion lookatRotation = RN::Quaternion::WithLookAt(-lookDir);
-			_zombie->SetWorldRotation(lookatRotation);
+		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition());
+		if (canSeePlayer) {
+			_following = true;
+			_followTime = 1.5f;
 		}
+		else if (_followTime > 0) {
+			_followTime -= delta;
+			_following = _followTime > 0;
+		}
+
+		if (_following) {
+			_navigationAgent->SetTarget(World::GetSharedInstance()->GetPlayer()->GetWorldPosition(), RN::Vector3(5.0f));
+		}
+		else {
+			_navigationAgent->SetTarget(_spawnPoint, RN::Vector3(5.0f));
+
+			RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
+			if (lookDir.GetLength() > 0.005f)
+			{
+				RN::Quaternion lookatRotation = RN::Quaternion::WithLookAt(-lookDir);
+				_zombie->SetWorldRotation(lookatRotation);
+			}
+		}
+
 		_previousPosition = GetWorldPosition();
 	}
 }

@@ -313,4 +313,14 @@ namespace PZ
 			Exit();
 		}
 	}
+
+	bool World::IsPlayerVisibleFrom(RN::Vector3 from) {
+		RN::Vector3 playerPos = _player->GetWorldPosition();
+		RN::PhysXContactInfo info = _physicsWorld->CastRay(from, playerPos, CollisionType::Level);
+		if (info.node == nullptr) {
+			return true;
+		}
+		float distance = (playerPos - from).GetLength();
+		return info.distance >= distance;
+	}
 }
