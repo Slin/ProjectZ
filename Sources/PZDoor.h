@@ -17,19 +17,27 @@ namespace PZ
 	class Door : public RN::SceneNode
 	{
 	public:
+		enum State
+		{
+			Automatic,
+			Opened,
+			Closed
+		};
+		
 		Door(RN::String *filename, RN::Vector3 openOffset);
 		~Door();
 		
 		void Update(float delta) override;
 		
-		void SetActive(bool active);
+		void SetState(State state);
 
 	private:
 		RN::Entity *_door;
 		RN::PhysXDynamicBody *_body;
 		
+		State _state;
+		
 		RN::Vector3 _openOffset;
-		bool _isActive;
 	};
 }
 

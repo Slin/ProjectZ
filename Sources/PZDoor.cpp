@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	Door::Door(RN::String *filename, RN::Vector3 openOffset) : _isActive(true), _openOffset(openOffset)
+	Door::Door(RN::String *filename, RN::Vector3 openOffset) : _state(State::Automatic), _openOffset(openOffset)
 	{
 		RN::Model *model = RN::Model::WithName(filename);
 		_door = new RN::Entity(model);
@@ -34,7 +34,7 @@ namespace PZ
 		RN::SceneNode::Update(delta);
 		
 		float distanceToPlayer = (World::GetSharedInstance()->GetPlayer()->GetWorldPosition()-GetWorldPosition()).GetLength();
-		if(distanceToPlayer > 3.0f || !_isActive)
+		if((distanceToPlayer > 3.0f && _state == State::Automatic) || _state == State::Closed)
 		{
 			RN::Vector3 closeDirection = -_door->GetPosition();
 			if(closeDirection.GetLength() > delta)
@@ -44,7 +44,7 @@ namespace PZ
 			_body->SetKinematicTarget(GetWorldRotation().GetRotatedVector(closeDirection)+_door->GetWorldPosition(), GetWorldRotation());
 		}
 		
-		if(_isActive && distanceToPlayer <= 3.0f)
+		if((distanceToPlayer <= 3.0f && _state == State::Automatic) || _state == State::Opened)
 		{
 			RN::Vector3 openDirection = _openOffset-_door->GetPosition();
 			if(openDirection.GetLength() > delta)
@@ -55,8 +55,8 @@ namespace PZ
 		}
 	}
 	
-	void Door::SetActive(bool active)
+	void Door::SetState(State state)
 	{
-		_isActive = active;
+		_state = state;
 	}
 }

@@ -62,7 +62,6 @@ namespace PZ
 			AddNode(_vrCamera);
 		}
 		
-		_audioWorld->SetListener(_mainCamera);
 		RN::SteamAudioPlayer *atmoAudioPlayer = _audioWorld->PlaySound(RN::AudioAsset::WithName(RNCSTR("audio/atmo.ogg")));
 		atmoAudioPlayer->SetRepeat(true);
 		
