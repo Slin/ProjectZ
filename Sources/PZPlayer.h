@@ -25,6 +25,8 @@ namespace PZ
 
 		void Die();
 		bool IsDead();
+		
+		bool IsActivatePressed();
 
 	private:
 		RN::SceneNode *_camera;

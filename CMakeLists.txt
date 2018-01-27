@@ -32,6 +32,9 @@ set(SOURCES
 	Sources/PZSpittingZombie.cpp
 	Sources/PZZombie.cpp
 	Sources/PZDoor.cpp
+	Sources/PZSwitch.cpp
+	Sources/PZButtonSwitch.cpp
+	Sources/PZStickSwitch.cpp
 	Sources/main.cpp)
 
 set(HEADERS
@@ -39,6 +42,9 @@ set(HEADERS
 	Sources/PZWorld.h
 	Sources/PZPlayer.h
 	Sources/PZDoor.h
+	Sources/PZSwitch.h
+	Sources/PZButtonSwitch.h
+	Sources/PZStickSwitch.h
 	Sources/PZZombieBase.h
 	Sources/PZSpittingZombie.h
 	Sources/PZZombie.h)

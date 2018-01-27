@@ -115,4 +115,20 @@ namespace PZ
 	bool Player::IsDead() {
 		return _dead;
 	}
+	
+	bool Player::IsActivatePressed()
+	{
+		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
+		bool active = (int)manager->IsControlToggling(RNCSTR("E"));
+		
+		if(_gamepad && !active)
+		{
+			RN::Object *buttonCross = _gamepad->GetControlValue(RNCSTR("Button Cross"));
+			if(buttonCross)
+			{
+				active = buttonCross->Downcast<RN::Value>()->GetValue<bool>();
+			}
+		}
+		return active;
+	}
 }
