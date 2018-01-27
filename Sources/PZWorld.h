@@ -49,6 +49,10 @@ namespace PZ
 
 		bool IsPlayerVisibleFrom(RN::Vector3);
 
+		void ShowUI(const RN::String *file);
+		void HideUI();
+		bool IsInUI();
+
 	protected:
 		void WillBecomeActive() override;
 
@@ -74,6 +78,10 @@ namespace PZ
 		RN::PhysXWorld *_physicsWorld;
 		RN::SteamAudioWorld *_audioWorld;
 		RN::RecastWorld *_navigationWorld;
+
+		RN::Entity *_uiEntity;
+		RN::Vector3 _uiPlayerPositionBackup;
+		RN::Quaternion _uiPlayerRotationBackup;
 		
 		bool _isPaused;
 

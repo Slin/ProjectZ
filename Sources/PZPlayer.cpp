@@ -56,8 +56,22 @@ namespace PZ
 		}
 
 		RN::SceneNode::Update(delta);
-		
+
 		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
+
+		if (World::GetSharedInstance()->IsInUI()) {
+			if (manager->IsControlToggling(RNCSTR("A"))) {
+				World::GetSharedInstance()->HideUI();
+			}
+			else if (_gamepad) {
+				RN::ButtonControl *buttonCross = _gamepad->GetControlWithName<RN::ButtonControl>(RNCSTR("Button Cross"));
+				if (buttonCross) {
+					World::GetSharedInstance()->HideUI();
+				}
+			}
+
+			return;
+		}
 
 		RN::Vector3 rotation(0.0);
 		rotation.x = manager->GetMouseDelta().x;

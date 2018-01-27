@@ -27,7 +27,7 @@ namespace PZ
 		//RN::Kernel::GetSharedInstance()->Exit();
 	}
 
-	World::World(RN::VRWindow *vrWindow, RN::Window *window, bool hasShadows, RN::uint8 msaa, bool debug) : _window(nullptr), _vrWindow(nullptr), _hasShadows(hasShadows), _msaa(msaa), _debug(debug), _audioWorld(nullptr), _vrCamera(nullptr), _isPaused(false), _shadowCamera(nullptr)
+	World::World(RN::VRWindow *vrWindow, RN::Window *window, bool hasShadows, RN::uint8 msaa, bool debug) : _window(nullptr), _vrWindow(nullptr), _hasShadows(hasShadows), _msaa(msaa), _debug(debug), _audioWorld(nullptr), _vrCamera(nullptr), _isPaused(false), _shadowCamera(nullptr), _uiEntity(nullptr)
 	{
 		if (vrWindow)
 			_vrWindow = vrWindow->Retain();
@@ -69,6 +69,8 @@ namespace PZ
 		AddNode(_player->Autorelease());
 		_player->SetWorldPosition(RN::Vector3(-14.0f, 0.0f, 0.0f));
 		CreateTestLevel();
+
+		//ShowUI(RNCSTR("test.png"));
 	}
 
 	void World::InitializePlatform()
@@ -391,5 +393,40 @@ namespace PZ
 			}
 		}
 		return false;
+	}
+
+	void World::ShowUI(const RN::String *file) {
+		HideUI();
+
+		RN::Mesh *mesh = RN::Mesh::WithTexturedPlane(RN::Quaternion::WithEulerAngle(RN::Vector3(0, 90.0f, 0)), RN::Vector3(), RN::Vector2(0.35f, 0.35f));
+		RN::Shader *vertexShader = RN::Renderer::GetActiveRenderer()->GetDefaultShader(RN::Shader::Type::Vertex, RN::Shader::Options::WithMesh(mesh));
+		RN::Shader *fragmentShader = RN::Renderer::GetActiveRenderer()->GetDefaultShader(RN::Shader::Type::Fragment, RN::Shader::Options::WithMesh(mesh));
+		RN::Material *material = RN::Material::WithShaders(vertexShader, fragmentShader);
+		RN::Texture *texture = RN::Texture::WithName(file);
+		material->AddTexture(texture);
+		RN::Model *model = new RN::Model(mesh, material);
+		_uiEntity = new RN::Entity(model);
+		_uiEntity->SetPosition(RN::Vector3(0, 0, -0.5f));
+		_mainCamera->AddChild(_uiEntity);
+		_uiPlayerPositionBackup = _player->GetWorldPosition();
+		_uiPlayerRotationBackup = _player->GetWorldRotation();
+
+		_player->SetWorldPosition(RN::Vector3(-1000, 0, 0));
+		_player->SetWorldRotation(RN::Quaternion::WithIdentity());
+	}
+
+	void World::HideUI() {
+		if (_uiEntity == nullptr) {
+			return;
+		}
+
+		_mainCamera->RemoveChild(_uiEntity);
+		_uiEntity = nullptr;
+		_player->SetWorldPosition(_uiPlayerPositionBackup);
+		_player->SetWorldRotation(_uiPlayerRotationBackup);
+	}
+
+	bool World::IsInUI() {
+		return _uiEntity != nullptr;
 	}
 }
