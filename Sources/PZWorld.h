@@ -14,6 +14,7 @@
 #include "RNVRCamera.h"
 #include "RNPhysXWorld.h"
 #include "RNSteamAudioWorld.h"
+#include "RNRecastWorld.h"
 
 #include "PZPlayer.h"
 
@@ -65,6 +66,7 @@ namespace PZ
 
 		RN::PhysXWorld *_physicsWorld;
 		RN::SteamAudioWorld *_audioWorld;
+		RN::RecastWorld *_navigationWorld;
 		
 		bool _isPaused;
 

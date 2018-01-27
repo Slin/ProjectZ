@@ -48,6 +48,8 @@ namespace PZ
 
 		_physicsWorld = new RN::PhysXWorld(RN::Vector3(0.0, -9.81, 0.0), true);
 		AddAttachment(_physicsWorld);
+		
+		_navigationWorld = new RN::RecastWorld();
 
 		if(_vrCamera)
 		{
@@ -176,6 +178,8 @@ namespace PZ
 		RN::PhysXStaticBody *levelBody = RN::PhysXStaticBody::WithShape(levelShape);
 		levelBody->SetCollisionFilter(CollisionType::Level, CollisionType::All);
 		level->AddAttachment(levelBody);
+		
+		_navigationWorld->SetRecastMesh(RN::RecastMesh::WithModel(levelModel), 10);
 
 /*		if(_audioWorld)
 		{
