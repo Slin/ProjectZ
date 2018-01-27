@@ -23,10 +23,20 @@ namespace PZ
 		
 		void Update(float delta) override;
 
+		void Die();
+		bool IsDead();
+
 	private:
 		RN::SceneNode *_camera;
 		RN::PhysXKinematicController *_controller;
 		RN::InputDevice *_gamepad;
+
+		RN::Vector3 _spawnPoint;
+		RN::Quaternion _spawnRotation;
+		bool _storeSpawnPoint;
+		bool _dead;
+		float _deathTime;
+		float _invulnerableTime;
 	};
 }
 

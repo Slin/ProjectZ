@@ -1,4 +1,4 @@
-//
+// 
 //  PZSpittingZombie.cpp
 //  Project: Z
 //
@@ -32,6 +32,8 @@ namespace PZ
 	{
 		ZombieBase::Update(delta);
 
+		PZ::Player *player = World::GetSharedInstance()->GetPlayer();
+
 		bool anyActive = false;
 		for (int i = 0; i < PZ_MAX_SPIT_BLOBS; i++) {
 			SpitBlob *blob = &_spitBlobs[i];
@@ -42,12 +44,18 @@ namespace PZ
 			blob->velocity.y -= 9.8 * delta;
 			RN::Vector3 pos = blob->entity->GetPosition();
 			blob->entity->SetPosition(pos + blob->velocity * delta);
+
+			if (!player->IsDead()) {
+				RN::Vector3 vec = player->GetPosition() - GetPosition();
+				vec.y = 0;
+				if (vec.GetLength() < 0.5f) {
+					player->Die();
+				}
+			}
 		}
 
-		PZ::Player *player = World::GetSharedInstance()->GetPlayer();
 		float dist = (player->GetPosition() - GetPosition()).GetLength();
-		bool spitting = dist < 3;
-
+		bool spitting = !player->IsDead() && dist < 3.0f;
 		if (!anyActive && !spitting) {
 			_spitNextTime = 0.5f;
 			return;
@@ -63,11 +71,11 @@ namespace PZ
 					blob->active = true;
 				}
 				RN::Vector3 spitPos = GetPosition();
-				spitPos.y = 1.2;
+				spitPos.y = 1.2f;
 				blob->entity->SetPosition(spitPos);
 
 				RN::Vector3 targetPos = player->GetWorldPosition();
-				targetPos.y = 2.4;
+				targetPos.y = 2.4f;
 
 				blob->velocity = (targetPos - spitPos).GetNormalized(8.0f);
 				float r = float(rand()) / float(RAND_MAX);
