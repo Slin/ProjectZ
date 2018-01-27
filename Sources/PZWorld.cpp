@@ -240,8 +240,8 @@ namespace PZ
 		Zombie *zombie = new Zombie();
 		AddNode(zombie->Autorelease());
 		
-		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.7f, 0.0f, 0.0f));
-		AddNode(door->Autorelease());
+//		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.7f, 0.0f, 0.0f));
+//		AddNode(door->Autorelease());
 	}
 
 	void World::UpdateForWindowSize() const
