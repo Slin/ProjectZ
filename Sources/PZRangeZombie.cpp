@@ -46,7 +46,7 @@ namespace PZ
 			blob->entity->SetPosition(pos + blob->velocity * delta);
 
 			if (!player->IsDead()) {
-				RN::Vector3 vec = player->GetPosition() - GetPosition();
+				RN::Vector3 vec = player->GetPosition() - blob->entity->GetPosition();
 				vec.y = 0;
 				if (vec.GetLength() < 0.5f) {
 					player->Die();
