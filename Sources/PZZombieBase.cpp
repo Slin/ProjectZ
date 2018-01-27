@@ -46,7 +46,7 @@ namespace PZ
 
 		RN::SceneNode::Update(delta);
 
-		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition());
+		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition() + RN::Vector3(0, 1, 0));
 		if (canSeePlayer) {
 			_following = true;
 			_followTime = 1.5f;

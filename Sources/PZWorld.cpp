@@ -311,11 +311,18 @@ namespace PZ
 
 	bool World::IsPlayerVisibleFrom(RN::Vector3 from) {
 		RN::Vector3 playerPos = _player->GetWorldPosition();
-		RN::PhysXContactInfo info = _physicsWorld->CastRay(from, playerPos, CollisionType::Level);
-		if (info.node == nullptr) {
-			return true;
+
+		for (float x = -0.3f; x < 0.4f; x += 0.3f) {
+			for (float y = 0.7f; y < 1.4f; y += 0.3f) {
+				for (float z = -0.3f; z < 0.4f; z += 0.3f) {
+					RN::Vector3 pos = playerPos + RN::Vector3(x, y, z);
+					RN::PhysXContactInfo info = _physicsWorld->CastRay(from, pos, CollisionType::Level);
+					if (info.distance < 0) {
+						return true;
+					}
+				}
+			}
 		}
-		float distance = (playerPos - from).GetLength();
-		return info.distance >= distance;
+		return false;
 	}
 }
