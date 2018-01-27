@@ -1,17 +1,17 @@
 // 
-//  PZSpittingZombie.cpp
+//  PZRangeZombie.cpp
 //  Project: Z
 //
 //  Copyright 2018 by Überpixel. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#include "PZSpittingZombie.h"
+#include "PZRangeZombie.h"
 #include "PZWorld.h"
 
 namespace PZ
 {
-	SpittingZombie::SpittingZombie()
+	RangeZombie::RangeZombie() : Zombie(RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm")))
 	{
 		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/spit.sgm"));
 		for (int i = 0; i < PZ_MAX_SPIT_BLOBS; i++) {
@@ -23,14 +23,14 @@ namespace PZ
 		_spitNextTime = 0;
 	}
 
-	SpittingZombie::~SpittingZombie()
+	RangeZombie::~RangeZombie()
 	{
 		//		SafeRelease(_controller);
 	}
 
-	void SpittingZombie::Update(float delta)
+	void RangeZombie::Update(float delta)
 	{
-		ZombieBase::Update(delta);
+		Zombie::Update(delta);
 
 		PZ::Player *player = World::GetSharedInstance()->GetPlayer();
 

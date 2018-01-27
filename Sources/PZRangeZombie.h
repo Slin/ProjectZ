@@ -1,18 +1,17 @@
-#pragma once
 //
-//  PZSpittingZombie.h
+//  PZRangeZombie.h
 //  Project: Z
 //
 //  Copyright 2018 by Überpixel. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.
 //
 
-#ifndef __PROJECT_Z_SPITTINGZOMBIE_H_
-#define __PROJECT_Z_SPITTINGZOMBIE_H_
+#ifndef __PROJECT_Z_RANGEZOMBIE_H_
+#define __PROJECT_Z_RANGEZOMBIE_H_
 
 #include <Rayne.h>
 #include <RNRecastAgent.h>
-#include "PZZombieBase.h"
+#include "PZZombie.h"
 
 #define PZ_MAX_SPIT_BLOBS 64
 
@@ -24,11 +23,11 @@ namespace PZ
 		bool active;
 	} SpitBlob;
 
-	class SpittingZombie : public ZombieBase
+	class RangeZombie : public Zombie
 	{
 	public:
-		SpittingZombie();
-		~SpittingZombie();
+		RangeZombie();
+		~RangeZombie();
 
 		void Update(float delta) override;
 
@@ -41,4 +40,4 @@ namespace PZ
 	};
 }
 
-#endif /* defined(__PROJECT_Z_ZOMBIE_H_) */
+#endif /* defined(__PROJECT_Z_RANGEZOMBIE_H_) */

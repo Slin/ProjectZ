@@ -257,19 +257,19 @@ namespace PZ
 		
 		
 		
-		Zombie *zombie = new Zombie();
+		Zombie *zombie = new MeleeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(-7.0, 0.0, 1.0));
 		
-		zombie = new Zombie();
+		zombie = new RangeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(-6.0, 0.0, -12.0));
 		
-		zombie = new Zombie();
+		zombie = new MeleeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(6.0, 0.0, 12.0));
 		
-		zombie = new Zombie();
+		zombie = new RangeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(24.0, 0.0, 8.0));
 		

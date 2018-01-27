@@ -17,8 +17,8 @@
 #include "RNRecastWorld.h"
 
 #include "PZPlayer.h"
-#include "PZSpittingZombie.h"
-#include "PZZombie.h"
+#include "PZRangeZombie.h"
+#include "PZMeleeZombie.h"
 #include "PZDoor.h"
 
 namespace PZ

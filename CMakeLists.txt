@@ -28,9 +28,9 @@ set(SOURCES
 	Sources/PZApplication.cpp
 	Sources/PZWorld.cpp
 	Sources/PZPlayer.cpp
-	Sources/PZZombieBase.cpp
-	Sources/PZSpittingZombie.cpp
 	Sources/PZZombie.cpp
+	Sources/PZRangeZombie.cpp
+	Sources/PZMeleeZombie.cpp
 	Sources/PZDoor.cpp
 	Sources/PZSwitch.cpp
 	Sources/PZButtonSwitch.cpp
@@ -45,9 +45,9 @@ set(HEADERS
 	Sources/PZSwitch.h
 	Sources/PZButtonSwitch.h
 	Sources/PZStickSwitch.h
-	Sources/PZZombieBase.h
-	Sources/PZSpittingZombie.h
-	Sources/PZZombie.h)
+	Sources/PZZombie.h
+	Sources/PZRangeZombie.h
+	Sources/PZMeleeZombie.h)
 
 set(RESOURCES
 	manifest.json
