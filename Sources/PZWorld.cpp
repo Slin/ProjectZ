@@ -67,10 +67,9 @@ namespace PZ
 		
 		_player = new Player(_mainCamera);
 		AddNode(_player->Autorelease());
-		_player->SetWorldPosition(RN::Vector3(-14.0f, 0.0f, 0.0f));
 		CreateTestLevel();
-
-		//ShowUI(RNCSTR("test.png"));
+		_player->SetWorldPosition(RN::Vector3(-14.0f, 0.0f, 0.0f));
+		_mainCamera->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180, 0, 0)));
 	}
 
 	void World::InitializePlatform()
@@ -409,10 +408,10 @@ namespace PZ
 		_uiEntity->SetPosition(RN::Vector3(0, 0, -0.5f));
 		_mainCamera->AddChild(_uiEntity);
 		_uiPlayerPositionBackup = _player->GetWorldPosition();
-		_uiPlayerRotationBackup = _player->GetWorldRotation();
+		_uiPlayerRotationBackup = _mainCamera->GetWorldRotation();
 
 		_player->SetWorldPosition(RN::Vector3(-1000, 0, 0));
-		_player->SetWorldRotation(RN::Quaternion::WithIdentity());
+		_mainCamera->SetWorldRotation(RN::Quaternion::WithIdentity());
 	}
 
 	void World::HideUI() {
@@ -423,7 +422,7 @@ namespace PZ
 		_mainCamera->RemoveChild(_uiEntity);
 		_uiEntity = nullptr;
 		_player->SetWorldPosition(_uiPlayerPositionBackup);
-		_player->SetWorldRotation(_uiPlayerRotationBackup);
+		_mainCamera->SetWorldRotation(_uiPlayerRotationBackup);
 	}
 
 	bool World::IsInUI() {

@@ -45,22 +45,17 @@ namespace PZ
 	
 	void Player::Update(float delta)
 	{
-		if (_storeSpawnPoint) {
-			_spawnPoint = GetPosition();
-			_spawnRotation = GetRotation();
-			_storeSpawnPoint = false;
-		}
-
-		if (_invulnerableTime > 0) {
-			_invulnerableTime -= delta;
-		}
-
 		RN::SceneNode::Update(delta);
 
 		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
 
+		static bool hasShownUI = true;
+		if (!hasShownUI) {
+			World::GetSharedInstance()->ShowUI(RNCSTR("test.png"));
+			hasShownUI = true;
+		}
 		if (World::GetSharedInstance()->IsInUI()) {
-			if (manager->IsControlToggling(RNCSTR("A"))) {
+			if (manager->IsControlToggling(RNCSTR("W"))) {
 				World::GetSharedInstance()->HideUI();
 			}
 			else if (_gamepad) {
@@ -69,8 +64,17 @@ namespace PZ
 					World::GetSharedInstance()->HideUI();
 				}
 			}
-
 			return;
+		}
+
+		if (_storeSpawnPoint) {
+			_spawnPoint = GetPosition();
+			_spawnRotation = GetRotation();
+			_storeSpawnPoint = false;
+		}
+
+		if (_invulnerableTime > 0) {
+			_invulnerableTime -= delta;
 		}
 
 		RN::Vector3 rotation(0.0);
@@ -107,7 +111,9 @@ namespace PZ
 			}
 		}
 
-		_camera->SetRotation(_cameraRotation);
+		if (_cameraShakeTime > 0) {
+			_camera->SetRotation(_cameraRotation);
+		}
 		_camera->Rotate(rotation * delta * 15.0f);
 		_cameraRotation = _camera->GetRotation();
 
