@@ -64,7 +64,7 @@ namespace PZ
 		
 		_player = new Player(_mainCamera);
 		AddNode(_player->Autorelease());
-		_player->SetWorldPosition(RN::Vector3(2.0f, 2.0f, 2.0f));
+		_player->SetWorldPosition(RN::Vector3(-14.0f, 0.0f, 0.0f));
 		CreateTestLevel();
 	}
 
@@ -182,7 +182,7 @@ namespace PZ
 		
 		_navigationWorld->SetRecastMesh(RN::RecastMesh::WithModel(levelModel), 10);
 
-/*		if(_audioWorld)
+		if(_audioWorld)
 		{
 			RN::SteamAudioMaterial groundAudioMaterial;
 			groundAudioMaterial.lowFrequencyAbsorption = 0.2f;
@@ -191,30 +191,27 @@ namespace PZ
 			groundAudioMaterial.scattering = 0.5f;
 			_audioWorld->AddMaterial(groundAudioMaterial);
 
-			RN::SteamAudioMaterial wallAudioMaterial;
+/*			RN::SteamAudioMaterial wallAudioMaterial;
 			wallAudioMaterial.lowFrequencyAbsorption = 0.03f;
 			wallAudioMaterial.midFrequencyAbsorption = 0.07f;
 			wallAudioMaterial.highFrequencyAbsorption = 0.1f;
 			wallAudioMaterial.scattering = 0.3f;
-			_audioWorld->AddMaterial(wallAudioMaterial);
+			_audioWorld->AddMaterial(wallAudioMaterial);*/
 
-			RN::Model::LODStage *lodStage = groundModel->GetLODStage(0);
+			RN::Model::LODStage *lodStage = levelModel->GetLODStage(0);
 			for(int i = 0; i < lodStage->GetCount(); i++)
 			{
-				RN::Material *material = lodStage->GetMaterialAtIndex(i);
-				material->SetAlphaToCoverage(true, 0.0, 1.0);
-				material->SetCullMode(RN::CullMode::None);
-
+				//RN::Material *material = lodStage->GetMaterialAtIndex(0);
 				RN::SteamAudioGeometry groundAudioGeometry;
 				groundAudioGeometry.mesh = lodStage->GetMeshAtIndex(i);
-				groundAudioGeometry.materialIndex = (i == 0) ? 0 : 1;
+				groundAudioGeometry.materialIndex = 0;
 				groundAudioGeometry.position = level->GetWorldPosition();
 				groundAudioGeometry.scale = level->GetWorldScale();
 				groundAudioGeometry.rotation = level->GetWorldRotation();
 				_audioWorld->AddStaticGeometry(groundAudioGeometry);
 			}
 
-			_audioWorld->UpdateScene();*/
+			_audioWorld->UpdateScene();
 
 /*			if(_isClient)
 			{
@@ -234,11 +231,28 @@ namespace PZ
 					AddNode(radioEntity);
 				}
 			}*/
-//		}
+		}
 		
 		
 		Zombie *zombie = new Zombie();
 		AddNode(zombie->Autorelease());
+		zombie->SetWorldPosition(RN::Vector3(-7.0, 0.0, 1.0));
+		
+		zombie = new Zombie();
+		AddNode(zombie->Autorelease());
+		zombie->SetWorldPosition(RN::Vector3(-6.0, 0.0, -12.0));
+		
+		zombie = new Zombie();
+		AddNode(zombie->Autorelease());
+		zombie->SetWorldPosition(RN::Vector3(6.0, 0.0, 12.0));
+		
+		zombie = new Zombie();
+		AddNode(zombie->Autorelease());
+		zombie->SetWorldPosition(RN::Vector3(24.0, 0.0, 8.0));
+		
+//		zombie = new Zombie();
+//		AddNode(zombie->Autorelease());
+//		zombie->SetWorldPosition(RN::Vector3(26.0, 0.0, -4.0));
 		
 //		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.7f, 0.0f, 0.0f));
 //		AddNode(door->Autorelease());
