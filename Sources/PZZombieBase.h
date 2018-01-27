@@ -31,6 +31,7 @@ namespace PZ
 
 		bool _following;
 		float _followTime;
+		bool _returnToSpawn;
 		RN::Vector3 _spawnPoint;
 		bool _storeSpawnPoint;
 	};

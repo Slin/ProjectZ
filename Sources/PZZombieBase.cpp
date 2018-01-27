@@ -30,6 +30,7 @@ namespace PZ
 
 		_following = false;
 		_storeSpawnPoint = true;
+		_returnToSpawn = false;
 	}
 
 	ZombieBase::~ZombieBase()
@@ -46,6 +47,21 @@ namespace PZ
 
 		RN::SceneNode::Update(delta);
 
+		bool playerIsDead = World::GetSharedInstance()->GetPlayer()->IsDead();
+		if (playerIsDead) {
+			_returnToSpawn = true;
+		}
+		else if (_returnToSpawn) {
+			//SetWorldPosition(_spawnPoint);
+			//_returnToSpawn = false;
+
+			_navigationAgent->SetTarget(_spawnPoint, RN::Vector3(20.0f));
+			if ((GetWorldPosition() - _spawnPoint).GetLength() < 2.0f) {
+				_returnToSpawn = false;
+			}
+			return;
+		}
+
 		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition() + RN::Vector3(0, 1, 0));
 		if (canSeePlayer) {
 			_following = true;
@@ -60,7 +76,7 @@ namespace PZ
 			_navigationAgent->SetTarget(World::GetSharedInstance()->GetPlayer()->GetWorldPosition(), RN::Vector3(5.0f));
 		}
 		else {
-			_navigationAgent->SetTarget(_spawnPoint, RN::Vector3(5.0f));
+			_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
 
 			RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
 			if (lookDir.GetLength() > 0.005f)
