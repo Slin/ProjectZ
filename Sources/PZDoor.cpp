@@ -18,7 +18,7 @@ namespace PZ
 		AddChild(_door->Autorelease());
 		
 		RN::PhysXMaterial *physicsMaterial = new RN::PhysXMaterial();
-		_body = new RN::PhysXDynamicBody(RN::PhysXCompoundShape::WithModel(model, physicsMaterial, false), 0.0f);
+		_body = new RN::PhysXDynamicBody(RN::PhysXCompoundShape::WithModel(model, physicsMaterial, false), 1.0f);
 		_body->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
 		_body->SetEnableKinematic(true);
 		_door->AddAttachment(_body);
