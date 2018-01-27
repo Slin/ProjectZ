@@ -24,10 +24,10 @@ namespace PZ
 		_navigationAgent = new RN::RecastAgent(settings);
 		AddAttachment(_navigationAgent);
 		
-		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/testzombie.sgm"));
+		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm"));
 		_zombie = new RN::Entity(model);
 		AddChild(_zombie->Autorelease());
-		_zombie->SetPosition(RN::Vector3(0.0, 1.0, 0.0));
+		//_zombie->SetPosition(RN::Vector3(0.0, 1.0, 0.0));
 	}
 	
 	Zombie::~Zombie()
