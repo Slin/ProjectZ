@@ -86,6 +86,11 @@ namespace PZ
 		bool _isPaused;
 
 		static World *_sharedInstance;
+
+		float _fadeTime;
+		float _fadeTimeTotal;
+		bool _fadingIn;
+		bool _fadingOut;
 	};
 }
 

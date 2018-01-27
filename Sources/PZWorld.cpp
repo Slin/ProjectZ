@@ -29,6 +29,9 @@ namespace PZ
 
 	World::World(RN::VRWindow *vrWindow, RN::Window *window, bool hasShadows, RN::uint8 msaa, bool debug) : _window(nullptr), _vrWindow(nullptr), _hasShadows(hasShadows), _msaa(msaa), _debug(debug), _audioWorld(nullptr), _vrCamera(nullptr), _isPaused(false), _shadowCamera(nullptr), _uiEntity(nullptr)
 	{
+		_fadingIn = false;
+		_fadingOut = false;
+
 		if (vrWindow)
 			_vrWindow = vrWindow->Retain();
 
@@ -109,8 +112,11 @@ namespace PZ
 			RN::Framebuffer *copyFramebuffer = RN::Renderer::GetActiveRenderer()->CreateFramebuffer(mainWindow->GetSize());
 			copyFramebuffer->SetColorTarget(RN::Framebuffer::TargetView::WithTexture(copyTexture));
 			resolvePass->SetFramebuffer(copyFramebuffer);
-			RN::PostProcessingAPIStage *copyPass = new RN::PostProcessingAPIStage(RN::PostProcessingAPIStage::Type::Convert);
-			resolvePass->AddRenderPass(copyPass);
+
+			RN::PostProcessingStage *monitorPass = new RN::PostProcessingStage();
+			_copyEyeToScreenMaterial = RN::Material::WithShaders(_shaderLibrary->GetShaderWithName(RNCSTR("pp_vertex")), _shaderLibrary->GetShaderWithName(RNCSTR("pp_blit_fragment")));
+			monitorPass->SetMaterial(_copyEyeToScreenMaterial);
+			resolvePass->AddRenderPass(monitorPass);
 
 			RN::Camera *camera = new RN::Camera();
 			_mainCamera = camera;
@@ -374,6 +380,22 @@ namespace PZ
 		if(RN::InputManager::GetSharedInstance()->IsControlToggling(RNCSTR("ESC")))
 		{
 			Exit();
+		}
+
+		if (_fadingIn || _fadingOut) {
+			_fadeTime -= delta;
+			float percent = 1.0f;
+			if (_fadeTime <= 0) {
+				_fadingIn = false;
+				_fadingOut = false;
+			}
+			else {
+				percent = 1.0f - _fadeTime / _fadeTimeTotal;
+			}
+			if (_fadingOut) {
+				percent = 1.0f - percent;
+			}
+			_copyEyeToScreenMaterial->SetAmbientColor(RN::Color(percent, percent, percent, 1.0f));
 		}
 	}
 
