@@ -48,8 +48,8 @@ namespace PZ
 		rotation = -rotation;
 		
 		RN::Vector3 translation(0.0);
-		translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 10.0f;
-		translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 10.0f;
+		translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 3.0f;
+		translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 3.0f;
 		
 		
 		if(_gamepad)
@@ -59,8 +59,8 @@ namespace PZ
 			if(leftAnalog)
 			{
 				RN::Vector2 left = leftAnalog->Downcast<RN::Value>()->GetValue<RN::Vector2>();
-				translation.x += left.x * 10.0f;
-				translation.z += left.y * 10.0f;
+				translation.x += left.x * 3.0f;
+				translation.z += left.y * 3.0f;
 			}
 			
 			RN::Object *rightAnalog = _gamepad->GetControlValue(RNCSTR("Analog Right"));

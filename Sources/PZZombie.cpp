@@ -20,7 +20,8 @@ namespace PZ
 		AddAttachment(_controller);*/
 		
 		SetWorldPosition(RN::Vector3(17.0, 0.0, 0.0));
-		_navigationAgent = new RN::RecastAgent();
+		RN::RecastAgent::Settings settings;
+		_navigationAgent = new RN::RecastAgent(settings);
 		AddAttachment(_navigationAgent);
 		
 		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/testzombie.sgm"));
