@@ -78,6 +78,13 @@ namespace PZ
 			_navigationAgent->SetTarget(GetWorldPosition());
 		}
 
+		RN::PhysXContactInfo hit = World::GetSharedInstance()->GetPhysicsWorld()->CastRay(_previousPosition+RN::Vector3(0.0f, 1.0f, 0.0f), GetWorldPosition()+RN::Vector3(0.0f, 1.0f, 0.0f));
+		if(hit.distance > -0.5f)
+		{
+			_following = false;
+			_followTime = 0;
+		}
+		
 		RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
 		if (lookDir.GetLength() > 0.005f)
 		{
