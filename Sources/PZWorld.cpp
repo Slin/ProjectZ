@@ -62,6 +62,10 @@ namespace PZ
 			AddNode(_vrCamera);
 		}
 		
+		_audioWorld->SetListener(_mainCamera);
+		RN::SteamAudioPlayer *atmoAudioPlayer = _audioWorld->PlaySound(RN::AudioAsset::WithName(RNCSTR("audio/atmo.ogg")));
+		atmoAudioPlayer->SetRepeat(true);
+		
 		_player = new Player(_mainCamera);
 		AddNode(_player->Autorelease());
 		_player->SetWorldPosition(RN::Vector3(-14.0f, 0.0f, 0.0f));
@@ -185,10 +189,10 @@ namespace PZ
 		if(_audioWorld)
 		{
 			RN::SteamAudioMaterial groundAudioMaterial;
-			groundAudioMaterial.lowFrequencyAbsorption = 0.2f;
-			groundAudioMaterial.midFrequencyAbsorption = 0.3f;
-			groundAudioMaterial.highFrequencyAbsorption = 0.4f;
-			groundAudioMaterial.scattering = 0.5f;
+			groundAudioMaterial.lowFrequencyAbsorption = 0.03f;
+			groundAudioMaterial.midFrequencyAbsorption = 0.07f;
+			groundAudioMaterial.highFrequencyAbsorption = 0.1f;
+			groundAudioMaterial.scattering = 0.1f;
 			_audioWorld->AddMaterial(groundAudioMaterial);
 
 /*			RN::SteamAudioMaterial wallAudioMaterial;
@@ -198,7 +202,7 @@ namespace PZ
 			wallAudioMaterial.scattering = 0.3f;
 			_audioWorld->AddMaterial(wallAudioMaterial);*/
 
-			RN::Model::LODStage *lodStage = levelModel->GetLODStage(0);
+/*			RN::Model::LODStage *lodStage = levelModel->GetLODStage(0);
 			for(int i = 0; i < lodStage->GetCount(); i++)
 			{
 				//RN::Material *material = lodStage->GetMaterialAtIndex(0);
@@ -211,26 +215,17 @@ namespace PZ
 				_audioWorld->AddStaticGeometry(groundAudioGeometry);
 			}
 
-			_audioWorld->UpdateScene();
+			_audioWorld->UpdateScene();*/
 
-/*			if(_isClient)
-			{
-				RN::Model *radioModel = RN::Model::WithName(RNCSTR("models/utilities/radio.sgm"));
-				RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/neverstop.ogg"));
-				for(int i = 0; i < 1; i++)
-				{
-					RN::SteamAudioSource *musicSource = new RN::SteamAudioSource(audioAsset, true);
-					musicSource->Play();
-					musicSource->SetRepeat(true);
-					musicSource->SetRadius(0.5f);
-					musicSource->SetGain(0.1f);
-					RN::Entity *radioEntity = new RN::Entity(radioModel);
-					radioEntity->AddChild(musicSource->Autorelease());
-					radioEntity->SetWorldPosition(/*RN::Vector3(RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(-30.0f, 30.0f), 1.0f, RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(-30.0f, 30.0f))*//*RN::Vector3(185.0, 1.0, -175.0));
-					radioEntity->SetRotation(RN::Vector3(135.0f, 0.0f, 0.0f));
-					AddNode(radioEntity);
-				}
-			}*/
+/*			RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/neverstop.ogg"));
+			RN::SteamAudioSource *musicSource = new RN::SteamAudioSource(audioAsset, false);
+			musicSource->SetWorldPosition(RN::Vector3(0.0f, 1.0f, 0.0f));
+			musicSource->SetTimeOfFlight(false);
+			musicSource->Play();
+			musicSource->SetRepeat(true);
+			musicSource->SetRadius(0.5f);
+			musicSource->SetGain(0.1f);
+			AddNode(musicSource);*/
 		}
 		
 		
