@@ -17,6 +17,7 @@
 #include "RNRecastWorld.h"
 
 #include "PZPlayer.h"
+#include "PZZombie.h"
 
 namespace PZ
 {

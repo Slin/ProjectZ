@@ -50,6 +50,7 @@ namespace PZ
 		AddAttachment(_physicsWorld);
 		
 		_navigationWorld = new RN::RecastWorld();
+		AddAttachment(_navigationWorld);
 
 		if(_vrCamera)
 		{
@@ -234,6 +235,10 @@ namespace PZ
 				}
 			}*/
 //		}
+		
+		
+		Zombie *zombie = new Zombie();
+		AddNode(zombie->Autorelease());
 	}
 
 	void World::UpdateForWindowSize() const

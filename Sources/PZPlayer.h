@@ -1,6 +1,6 @@
 //
 //  PZPlayer.h
-//  Projecgt: Z
+//  Project: Z
 //
 //  Copyright 2018 by Überpixel. All rights reserved.
 //  Unauthorized use is punishable by torture, mutilation, and vivisection.

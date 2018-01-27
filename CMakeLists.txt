@@ -28,12 +28,14 @@ set(SOURCES
 	Sources/PZApplication.cpp
 	Sources/PZWorld.cpp
 	Sources/PZPlayer.cpp
+	Sources/PZZombie.cpp
 	Sources/main.cpp)
 
 set(HEADERS
 	Sources/PZApplication.h
 	Sources/PZWorld.h
-	Sources/PZPlayer.h)
+	Sources/PZPlayer.h
+	Sources/PZZombie.h)
 
 set(RESOURCES
 	manifest.json
