@@ -75,14 +75,14 @@ namespace PZ
 			playerPos.y = 0;
 			zombiePos.y = 0;
 			if ((playerPos - zombiePos).GetLength() > 0.9f) {
-				_navigationAgent->SetTarget(player->GetWorldPosition(), RN::Vector3(5.0f));
+				_navigationAgent->SetTarget(player->GetWorldPosition());
 			}
 			else {
-				_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
+				_navigationAgent->SetTarget(GetWorldPosition());
 			}
 		}
 		else {
-			_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
+			_navigationAgent->SetTarget(GetWorldPosition());
 		}
 
 		RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
