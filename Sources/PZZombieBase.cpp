@@ -50,22 +50,14 @@ namespace PZ
 		bool playerIsDead = World::GetSharedInstance()->GetPlayer()->IsDead();
 		if (playerIsDead) {
 			_returnToSpawn = true;
+		} else if (_returnToSpawn) {
+			SetWorldPosition(_spawnPoint);
+			_returnToSpawn = false;
+			_followTime = 0;
+			_following = false;
 		}
 
 		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition() + RN::Vector3(0, 1, 0));
-
-		if (!playerIsDead && canSeePlayer && _returnToSpawn) {
-			_returnToSpawn = false;
-		} else if (_returnToSpawn) {
-			//SetWorldPosition(_spawnPoint);
-			//_returnToSpawn = false;
-
-			_navigationAgent->SetTarget(_spawnPoint, RN::Vector3(20.0f));
-			if ((GetWorldPosition() - _spawnPoint).GetLength() < 2.0f) {
-				_returnToSpawn = false;
-			}
-			return;
-		}
 
 		if (canSeePlayer) {
 			_following = true;
@@ -75,9 +67,11 @@ namespace PZ
 			_followTime -= delta;
 			_following = _followTime > 0;
 		}
+		
+		Player *player = World::GetSharedInstance()->GetPlayer();
 
-		if (_following) {
-			_navigationAgent->SetTarget(World::GetSharedInstance()->GetPlayer()->GetWorldPosition(), RN::Vector3(5.0f));
+		if (_following && (player->GetWorldPosition() - GetWorldPosition()).GetLength() > 0.7f) {
+			_navigationAgent->SetTarget(player->GetWorldPosition(), RN::Vector3(5.0f));
 		}
 		else {
 			_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
