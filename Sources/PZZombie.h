@@ -23,7 +23,9 @@ namespace PZ
 		void Update(float delta) override;
 
 	private:
+		RN::Entity *_zombie;
 		RN::RecastAgent *_navigationAgent;
+		RN::Vector3 _previousPosition;
 //		RN::PhysXKinematicController *_controller;
 	};
 }

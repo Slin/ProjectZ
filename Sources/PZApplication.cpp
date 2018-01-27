@@ -20,7 +20,9 @@ namespace PZ
 {
 	Application::Application() : _vrWindow(nullptr), _window(nullptr)
 	{
-		
+#if RN_PLATFORM_WINDOWS
+		ShowCursor(false);
+#endif
 	}
 
 	Application::~Application()
