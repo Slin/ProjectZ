@@ -17,6 +17,7 @@
 #include "RNRecastWorld.h"
 
 #include "PZPlayer.h"
+#include "PZSpittingZombie.h"
 #include "PZZombie.h"
 #include "PZDoor.h"
 
