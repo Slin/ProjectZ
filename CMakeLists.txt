@@ -28,6 +28,8 @@ set(SOURCES
 	Sources/PZApplication.cpp
 	Sources/PZWorld.cpp
 	Sources/PZPlayer.cpp
+	Sources/PZZombieBase.cpp
+	Sources/PZSpittingZombie.cpp
 	Sources/PZZombie.cpp
 	Sources/PZDoor.cpp
 	Sources/main.cpp)
@@ -37,6 +39,8 @@ set(HEADERS
 	Sources/PZWorld.h
 	Sources/PZPlayer.h
 	Sources/PZDoor.h
+	Sources/PZZombieBase.h
+	Sources/PZSpittingZombie.h
 	Sources/PZZombie.h)
 
 set(RESOURCES
