@@ -23,6 +23,8 @@ namespace PZ
 		void SetActive(bool active) override;
 
 	private:
+		RN::Entity *_base;
+		RN::Entity *_button;
 		
 	};
 }

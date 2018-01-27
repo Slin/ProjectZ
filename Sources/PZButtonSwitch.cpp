@@ -13,7 +13,11 @@ namespace PZ
 {
 	ButtonSwitch::ButtonSwitch()
 	{
+		_base = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/button_switch_base.sgm")));
+		AddChild(_base->Autorelease());
 		
+		_button = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/button_switch_button.sgm")));
+		AddChild(_button->Autorelease());
 	}
 	
 	ButtonSwitch::~ButtonSwitch()
@@ -24,8 +28,6 @@ namespace PZ
 	void ButtonSwitch::Update(float delta)
 	{
 		Switch::Update(delta);
-		
-		
 	}
 	
 	void ButtonSwitch::SetActive(bool active)
