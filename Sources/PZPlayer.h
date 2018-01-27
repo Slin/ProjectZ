@@ -39,6 +39,8 @@ namespace PZ
 		bool _dead;
 		float _deathTime;
 		float _invulnerableTime;
+		float _cameraShakeTime;
+		RN::Quaternion _cameraRotation;
 	};
 }
 

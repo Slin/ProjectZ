@@ -54,46 +54,59 @@ namespace PZ
 
 		RN::SceneNode::Update(delta);
 		
+		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
+
+		RN::Vector3 rotation(0.0);
+		rotation.x = manager->GetMouseDelta().x;
+		rotation.y = manager->GetMouseDelta().y;
+		rotation = -rotation;
+
+		RN::Vector3 translation(0.0);
 		if (!_dead) {
-			RN::InputManager *manager = RN::InputManager::GetSharedInstance();
-
-			RN::Vector3 rotation(0.0);
-			rotation.x = manager->GetMouseDelta().x;
-			rotation.y = manager->GetMouseDelta().y;
-			rotation = -rotation;
-
-			RN::Vector3 translation(0.0);
 			translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 3.0f;
 			translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 3.0f;
+		}
 
-			if (_gamepad)
+		if (_gamepad)
+		{
+			RN::Object *leftAnalog = _gamepad->GetControlValue(RNCSTR("Analog Left"));
+
+			if (leftAnalog)
 			{
-				RN::Object *leftAnalog = _gamepad->GetControlValue(RNCSTR("Analog Left"));
-
-				if (leftAnalog)
-				{
-					RN::Vector2 left = leftAnalog->Downcast<RN::Value>()->GetValue<RN::Vector2>();
+				RN::Vector2 left = leftAnalog->Downcast<RN::Value>()->GetValue<RN::Vector2>();
+				if (!_dead) {
 					translation.x += left.x * 3.0f;
 					translation.z += left.y * 3.0f;
 				}
-
-				RN::Object *rightAnalog = _gamepad->GetControlValue(RNCSTR("Analog Right"));
-
-				if (rightAnalog)
-				{
-					RN::Vector2 right = rightAnalog->Downcast<RN::Value>()->GetValue<RN::Vector2>();
-					rotation.x -= right.x * 20.0f;
-					rotation.y = right.y * 20.0f;
-				}
 			}
 
-			_camera->Rotate(rotation * delta * 15.0f);
+			RN::Object *rightAnalog = _gamepad->GetControlValue(RNCSTR("Analog Right"));
 
-			RN::Vector3 globalTranslaion = RN::Quaternion(RN::Vector3(_camera->GetWorldEulerAngle().x, 0.0f, 0.0f)).GetRotatedVector(translation);
-			_controller->Move(globalTranslaion*delta, delta);
-			_controller->Gravity(-9.81f, delta);
+			if (rightAnalog)
+			{
+				RN::Vector2 right = rightAnalog->Downcast<RN::Value>()->GetValue<RN::Vector2>();
+				rotation.x -= right.x * 20.0f;
+				rotation.y = right.y * 20.0f;
+			}
 		}
-		else {
+
+		_camera->SetRotation(_cameraRotation);
+		_camera->Rotate(rotation * delta * 15.0f);
+		_cameraRotation = _camera->GetRotation();
+
+		if (_cameraShakeTime > 0) {
+			_cameraShakeTime -= delta;
+			float a1 = (float(rand()) / float(RAND_MAX)) * 2.0f - 1.0f;
+			float a2 = (float(rand()) / float(RAND_MAX)) * 2.0f - 1.0f;
+			float a3 = (float(rand()) / float(RAND_MAX)) * 2.0f - 1.0f;
+			_camera->Rotate(RN::Quaternion(RN::Vector3(a1 * 4.0f, a2 * 4.0f, a3 * 4.0f)));
+		}
+
+		RN::Vector3 globalTranslaion = RN::Quaternion(RN::Vector3(_camera->GetWorldEulerAngle().x, 0.0f, 0.0f)).GetRotatedVector(translation);
+		_controller->Move(globalTranslaion*delta, delta);
+		_controller->Gravity(-9.81f, delta);
+		
+		if (_dead) {
 			_deathTime -= delta;
 			if (_deathTime < 0) {
 				_dead = false;
@@ -110,6 +123,7 @@ namespace PZ
 		}
 		_dead = true;
 		_deathTime = 3;
+		_cameraShakeTime = 0.5f;
 	}
 
 	bool Player::IsDead() {
