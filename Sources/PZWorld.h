@@ -20,6 +20,8 @@
 #include "PZRangeZombie.h"
 #include "PZMeleeZombie.h"
 #include "PZDoor.h"
+#include "PZButtonSwitch.h"
+#include "PZStickSwitch.h"
 
 namespace PZ
 {

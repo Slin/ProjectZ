@@ -22,9 +22,14 @@ namespace PZ
 		
 		void Update(float delta) override;
 		virtual void SetActive(bool active);
+		
+		void SetAction(std::function< void(bool) > action);
+		
+	protected:
+		bool _isActive;
 
 	private:
-		bool _isActive;
+		std::function< void(bool) > _action;
 		bool _isKeyPressed;
 	};
 }

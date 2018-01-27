@@ -256,6 +256,17 @@ namespace PZ
 		door->SetWorldPosition(RN::Vector3(23.0f, 1.0f, -9.0f));
 		
 		
+		Switch *switch_ = new ButtonSwitch();
+		AddNode(switch_);
+		switch_->SetWorldPosition(RN::Vector3(-14.0f, 1.0f, 0.0f));
+		switch_->SetAction([door](bool active){
+			door->SetState(active?Door::State::Opened:Door::State::Closed);
+		});
+		
+		switch_ = new StickSwitch();
+		AddNode(switch_);
+		switch_->SetWorldPosition(RN::Vector3(-14.5f, 1.0f, 0.0f));
+		
 		
 		Zombie *zombie = new MeleeZombie();
 		AddNode(zombie->Autorelease());
@@ -265,20 +276,13 @@ namespace PZ
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(-6.0, 0.0, -12.0));
 		
-		zombie = new MeleeZombie();
+		zombie = new RangeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(6.0, 0.0, 12.0));
 		
-		zombie = new RangeZombie();
+		zombie = new MeleeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(24.0, 0.0, 8.0));
-		
-//		zombie = new Zombie();
-//		AddNode(zombie->Autorelease());
-//		zombie->SetWorldPosition(RN::Vector3(26.0, 0.0, -4.0));
-		
-//		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.7f, 0.0f, 0.0f));
-//		AddNode(door->Autorelease());
 	}
 
 	void World::UpdateForWindowSize() const

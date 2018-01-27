@@ -20,7 +20,6 @@ namespace PZ
 		~StickSwitch();
 		
 		void Update(float delta) override;
-		void SetActive(bool active) override;
 
 	private:
 		RN::Entity *_base;

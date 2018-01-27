@@ -28,10 +28,31 @@ namespace PZ
 	void ButtonSwitch::Update(float delta)
 	{
 		Switch::Update(delta);
+		
+		if(_isActive)
+		{
+			float diff = 0.03 - _button->GetPosition().z;
+			if(diff < RN::k::EpsilonFloat)
+				Switch::SetActive(false);
+			
+			if(diff > delta*0.1)
+				diff = delta*0.1;
+			
+			_button->SetPosition(_button->GetPosition() + RN::Vector3(0.0f, 0.0f, diff));
+		}
+		else
+		{
+			float diff = 0.0 - _button->GetPosition().z;
+			if(diff < -delta*0.1)
+				diff = -delta*0.1;
+			
+			_button->SetPosition(_button->GetPosition() + RN::Vector3(0.0f, 0.0f, diff));
+		}
 	}
 	
 	void ButtonSwitch::SetActive(bool active)
 	{
-		Switch::SetActive(active);
+		if(active)
+			Switch::SetActive(active);
 	}
 }

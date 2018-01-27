@@ -137,10 +137,10 @@ namespace PZ
 		
 		if(_gamepad && !active)
 		{
-			RN::Object *buttonCross = _gamepad->GetControlValue(RNCSTR("Button Cross"));
+			RN::ButtonControl *buttonCross = _gamepad->GetControlWithName<RN::ButtonControl>(RNCSTR("Button Cross"));
 			if(buttonCross)
 			{
-				active = buttonCross->Downcast<RN::Value>()->GetValue<bool>();
+				active = buttonCross->IsPressed();
 			}
 		}
 		return active;

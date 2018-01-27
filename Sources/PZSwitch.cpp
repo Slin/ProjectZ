@@ -26,7 +26,7 @@ namespace PZ
 		RN::SceneNode::Update(delta);
 		
 		float distanceToPlayer = (World::GetSharedInstance()->GetPlayer()->GetWorldPosition()-GetWorldPosition()).GetLength();
-		if(distanceToPlayer < 1.0f)
+		if(distanceToPlayer < 2.0f)
 		{
 			if(World::GetSharedInstance()->GetPlayer()->IsActivatePressed())
 			{
@@ -45,5 +45,13 @@ namespace PZ
 	void Switch::SetActive(bool active)
 	{
 		_isActive = active;
+		
+		if(_action)
+			_action(_isActive);
+	}
+	
+	void Switch::SetAction(std::function< void(bool) > action)
+	{
+		_action = action;
 	}
 }

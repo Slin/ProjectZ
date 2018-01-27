@@ -18,6 +18,8 @@ namespace PZ
 		
 		_stick = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/stick_switch_stick.sgm")));
 		AddChild(_stick->Autorelease());
+		
+		_stick->SetRotation(RN::Vector3(0.0f, 0.0f, 90.0f));
 	}
 	
 	StickSwitch::~StickSwitch()
@@ -28,10 +30,22 @@ namespace PZ
 	void StickSwitch::Update(float delta)
 	{
 		Switch::Update(delta);
-	}
-	
-	void StickSwitch::SetActive(bool active)
-	{
-		Switch::SetActive(active);
+		
+		if(_isActive)
+		{
+			float diff = 0.0f - _stick->GetRotation().GetEulerAngle().z;
+			if(diff < -delta*70.0f)
+				diff = -delta*70.0f;
+			
+			_stick->SetRotation(_stick->GetRotation() + RN::Vector3(0.0f, 0.0f, diff));
+		}
+		else
+		{
+			float diff = 90.0 - _stick->GetRotation().GetEulerAngle().z;
+			if(diff > delta*70.0f)
+				diff = delta*70.0f;
+			
+			_stick->SetRotation(_stick->GetRotation() + RN::Vector3(0.0f, 0.0f, diff));
+		}
 	}
 }
