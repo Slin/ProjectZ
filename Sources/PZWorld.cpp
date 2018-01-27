@@ -227,17 +227,46 @@ namespace PZ
 			AddNode(musicSource);*/
 		}
 		
+		Switch *switch_;
+		
 		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.8f, 0.0f, 0.0f));
 		AddNode(door);
+		door->SetState(Door::State::Closed);
 		door->SetWorldPosition(RN::Vector3(-6.0f, 1.0f, 3.0f));
+		
+		switch_ = new ButtonSwitch();
+		AddNode(switch_);
+		switch_->SetWorldPosition(RN::Vector3(-4.5f, 1.0f, 3.1f));
+		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
+		switch_->SetAction([door](bool active){
+			door->SetState(Door::State::Automatic);
+		});
 		
 		door = new Door(RNCSTR("models/levels/door2.sgm"), RN::Vector3(0.0f, 0.0f, -1.8f));
 		AddNode(door);
+		door->SetState(Door::State::Closed);
 		door->SetWorldPosition(RN::Vector3(8.0f, 1.0f, -3.0f));
+		
+		switch_ = new ButtonSwitch();
+		AddNode(switch_);
+		switch_->SetWorldPosition(RN::Vector3(7.9f, 1.0f, -1.5f));
+		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(90.0f, 0.0f, 0.0f)));
+		switch_->SetAction([door](bool active){
+			door->SetState(Door::State::Automatic);
+		});
 		
 		door = new Door(RNCSTR("models/levels/door3.sgm"), RN::Vector3(1.8f, 0.0f, 0.0f));
 		AddNode(door);
+		door->SetState(Door::State::Closed);
 		door->SetWorldPosition(RN::Vector3(2.0f, 1.0f, 3.0f));
+		
+		switch_ = new ButtonSwitch();
+		AddNode(switch_);
+		switch_->SetWorldPosition(RN::Vector3(3.5f, 1.0f, 3.1f));
+		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
+		switch_->SetAction([door](bool active){
+			door->SetState(Door::State::Automatic);
+		});
 		
 		door = new Door(RNCSTR("models/levels/door4.sgm"), RN::Vector3(0.0f, 0.0f, -0.84f));
 		AddNode(door);
@@ -251,21 +280,27 @@ namespace PZ
 		AddNode(door);
 		door->SetWorldPosition(RN::Vector3(8.0f, 1.0f, 16.0f));
 		
-		door = new Door(RNCSTR("models/levels/door7.sgm"), RN::Vector3(-2.0f, 0.0f, 0.0f));
+		door = new Door(RNCSTR("models/levels/door7.sgm"), RN::Vector3(2.0f, 0.0f, 0.0f));
+		door->SetState(Door::State::Closed);
 		AddNode(door);
-		door->SetWorldPosition(RN::Vector3(23.0f, 1.0f, -9.0f));
+		door->SetWorldPosition(RN::Vector3(21.0f, 1.0f, -9.0f));
 		
 		
-		Switch *switch_ = new ButtonSwitch();
+		switch_ = new StickSwitch();
 		AddNode(switch_);
-		switch_->SetWorldPosition(RN::Vector3(-14.0f, 1.0f, 0.0f));
+		switch_->SetWorldPosition(RN::Vector3(25.0f, 1.0f, -1.9f));
+		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(90.0f, 0.0f, 0.0f)));
 		switch_->SetAction([door](bool active){
-			door->SetState(active?Door::State::Opened:Door::State::Closed);
+			door->SetState(door->GetState() == Door::State::Closed?Door::State::Opened:Door::State::Closed);
 		});
 		
 		switch_ = new StickSwitch();
 		AddNode(switch_);
-		switch_->SetWorldPosition(RN::Vector3(-14.5f, 1.0f, 0.0f));
+		switch_->SetWorldPosition(RN::Vector3(24.1f, 1.0f, -10.0f));
+		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
+		switch_->SetAction([door](bool active){
+			door->SetState(door->GetState() == Door::State::Closed?Door::State::Opened:Door::State::Closed);
+		});
 		
 		
 		Zombie *zombie = new MeleeZombie();

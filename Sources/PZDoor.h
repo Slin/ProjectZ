@@ -30,6 +30,7 @@ namespace PZ
 		void Update(float delta) override;
 		
 		void SetState(State state);
+		State GetState() const { return _state; }
 
 	private:
 		RN::Entity *_door;

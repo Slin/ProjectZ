@@ -32,6 +32,9 @@ namespace PZ
 		_dead = false;
 		_storeSpawnPoint = true;
 		_invulnerableTime = 3;
+		_deathTime = 0.0f;
+		_invulnerableTime = 0.0f;
+		_cameraShakeTime = 0.0f;
 	}
 	
 	Player::~Player()
