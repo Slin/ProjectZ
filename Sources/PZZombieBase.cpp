@@ -51,7 +51,12 @@ namespace PZ
 		if (playerIsDead) {
 			_returnToSpawn = true;
 		}
-		else if (_returnToSpawn) {
+
+		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition() + RN::Vector3(0, 1, 0));
+
+		if (!playerIsDead && canSeePlayer && _returnToSpawn) {
+			_returnToSpawn = false;
+		} else if (_returnToSpawn) {
 			//SetWorldPosition(_spawnPoint);
 			//_returnToSpawn = false;
 
@@ -62,7 +67,6 @@ namespace PZ
 			return;
 		}
 
-		bool canSeePlayer = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition() + RN::Vector3(0, 1, 0));
 		if (canSeePlayer) {
 			_following = true;
 			_followTime = 1.5f;
@@ -77,13 +81,13 @@ namespace PZ
 		}
 		else {
 			_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
+		}
 
-			RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
-			if (lookDir.GetLength() > 0.005f)
-			{
-				RN::Quaternion lookatRotation = RN::Quaternion::WithLookAt(-lookDir);
-				_zombie->SetWorldRotation(lookatRotation);
-			}
+		RN::Vector3 lookDir = GetWorldPosition() - _previousPosition;
+		if (lookDir.GetLength() > 0.005f)
+		{
+			RN::Quaternion lookatRotation = RN::Quaternion::WithLookAt(-lookDir);
+			_zombie->SetWorldRotation(lookatRotation);
 		}
 
 		_previousPosition = GetWorldPosition();
