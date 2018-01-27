@@ -26,7 +26,6 @@ namespace PZ
 		RN::Entity *_zombie;
 		RN::RecastAgent *_navigationAgent;
 		RN::Vector3 _previousPosition;
-		//		RN::PhysXKinematicController *_controller;
 
 		bool _following;
 		float _followTime;

@@ -13,13 +13,6 @@ namespace PZ
 {
 	Zombie::Zombie(RN::Model *model)
 	{
-		/*		RN::PhysXMaterial *physicsMaterial = new RN::PhysXMaterial();
-		_controller = new RN::PhysXKinematicController(0.25f, 1.1f, physicsMaterial->Autorelease());
-		_controller->SetPositionOffset(_controller->GetFeetOffset());
-		_controller->SetCollisionFilter(World::CollisionType::Character, World::CollisionType::Level | World::CollisionType::Character);
-		AddAttachment(_controller);*/
-
-		SetWorldPosition(RN::Vector3(17.0, 0.0, 0.0));
 		RN::RecastAgent::Settings settings;
 		_navigationAgent = new RN::RecastAgent(settings);
 		AddAttachment(_navigationAgent);
@@ -34,7 +27,7 @@ namespace PZ
 
 	Zombie::~Zombie()
 	{
-		//		SafeRelease(_controller);
+		
 	}
 
 	void Zombie::Update(float delta)
