@@ -227,6 +227,35 @@ namespace PZ
 			AddNode(musicSource);*/
 		}
 		
+		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.8f, 0.0f, 0.0f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(-6.0f, 1.0f, 3.0f));
+		
+		door = new Door(RNCSTR("models/levels/door2.sgm"), RN::Vector3(0.0f, 0.0f, -1.8f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(8.0f, 1.0f, -3.0f));
+		
+		door = new Door(RNCSTR("models/levels/door3.sgm"), RN::Vector3(1.8f, 0.0f, 0.0f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(2.0f, 1.0f, 3.0f));
+		
+		door = new Door(RNCSTR("models/levels/door4.sgm"), RN::Vector3(0.0f, 0.0f, -0.84f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(24.0f, 1.0f, -4.0f));
+		
+		door = new Door(RNCSTR("models/levels/door5.sgm"), RN::Vector3(0.0f, 0.0f, 0.84f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(24.0f, 1.0f, -3.0f));
+		
+		door = new Door(RNCSTR("models/levels/door6.sgm"), RN::Vector3(0.0f, 0.0f, -1.8f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(8.0f, 1.0f, 16.0f));
+		
+		door = new Door(RNCSTR("models/levels/door7.sgm"), RN::Vector3(-2.0f, 0.0f, 0.0f));
+		AddNode(door);
+		door->SetWorldPosition(RN::Vector3(23.0f, 1.0f, -9.0f));
+		
+		
 		
 		Zombie *zombie = new Zombie();
 		AddNode(zombie->Autorelease());
