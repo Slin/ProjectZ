@@ -69,8 +69,17 @@ namespace PZ
 		
 		Player *player = World::GetSharedInstance()->GetPlayer();
 
-		if (_following && (player->GetWorldPosition() - GetWorldPosition()).GetLength() > 0.7f) {
-			_navigationAgent->SetTarget(player->GetWorldPosition(), RN::Vector3(5.0f));
+		if (_following) {
+			RN::Vector3 playerPos = player->GetWorldPosition();
+			RN::Vector3 zombiePos = GetWorldPosition();
+			playerPos.y = 0;
+			zombiePos.y = 0;
+			if ((playerPos - zombiePos).GetLength() > 0.9f) {
+				_navigationAgent->SetTarget(player->GetWorldPosition(), RN::Vector3(5.0f));
+			}
+			else {
+				_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
+			}
 		}
 		else {
 			_navigationAgent->SetTarget(GetWorldPosition(), RN::Vector3(5.0f));
