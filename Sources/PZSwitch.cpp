@@ -60,7 +60,7 @@ namespace PZ
 				{
 					if(!_isKeyPressed)
 					{
-						bool hasKey = false;
+						bool hasKey = World::GetSharedInstance()->GetPlayer()->HasIDCard();
 						if(_needsKey && !hasKey)
 						{
 							if((!_lockedSource->IsPlaying() || _lockedSource->HasEnded()))
