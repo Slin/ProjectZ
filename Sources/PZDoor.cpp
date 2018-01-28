@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	Door::Door(RN::String *filename, RN::Vector3 openOffset) : _state(State::Automatic), _openOffset(openOffset)
+	Door::Door(RN::String *filename, RN::Vector3 openOffset) : _state(State::Automatic), _openOffset(openOffset), _didSetInitialState(false), _needsReset(false)
 	{
 		RN::Model *model = RN::Model::WithName(filename);
 		_door = new RN::Entity(model);
@@ -31,7 +31,24 @@ namespace PZ
 	
 	void Door::Update(float delta)
 	{
+		if(!_didSetInitialState)
+		{
+			_initialState = _state;
+			_didSetInitialState = true;
+		}
+		
 		RN::SceneNode::Update(delta);
+		
+		bool playerIsDead = World::GetSharedInstance()->GetPlayer()->IsDead();
+		if(playerIsDead)
+		{
+			_needsReset = true;
+		}
+		else if(_needsReset)
+		{
+			_state = _initialState;
+			_needsReset = false;
+		}
 		
 		bool isTriggered = false;
 		

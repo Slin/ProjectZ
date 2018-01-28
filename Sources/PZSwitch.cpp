@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	Switch::Switch() : _isActive(false)
+	Switch::Switch() : _isActive(false), _needsReset(false)
 	{
 		
 	}
@@ -22,8 +22,19 @@ namespace PZ
 	}
 	
 	void Switch::Update(float delta)
-	{
+	{		
 		RN::SceneNode::Update(delta);
+		
+		bool playerIsDead = World::GetSharedInstance()->GetPlayer()->IsDead();
+		if(playerIsDead)
+		{
+			_needsReset = true;
+		}
+		else if(_needsReset)
+		{
+			_isActive = false;
+			_needsReset = false;
+		}
 		
 		RN::Vector3 from = GetWorldPosition()+GetWorldRotation().GetRotatedVector(_raycastOffset);
 		RN::Vector3 to = World::GetSharedInstance()->GetPlayer()->GetWorldPosition() + RN::Vector3(0.0f, 1.0f, 0.0f);

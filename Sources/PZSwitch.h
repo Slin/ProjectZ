@@ -32,6 +32,7 @@ namespace PZ
 	private:
 		std::function< void(bool) > _action;
 		bool _isKeyPressed;
+		bool _needsReset;
 	};
 }
 

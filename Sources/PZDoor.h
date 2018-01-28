@@ -35,6 +35,9 @@ namespace PZ
 	private:
 		RN::Entity *_door;
 		RN::PhysXDynamicBody *_body;
+		State _initialState;
+		bool _didSetInitialState;
+		bool _needsReset;
 		
 		State _state;
 		
