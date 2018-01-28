@@ -52,6 +52,8 @@ namespace PZ
 		void ShowUI(const RN::String *file);
 		void HideUI();
 		bool IsInUI();
+		void Fade(bool in, float seconds);
+		bool IsFadeDone();
 
 	protected:
 		void WillBecomeActive() override;
@@ -91,6 +93,7 @@ namespace PZ
 		float _fadeTimeTotal;
 		bool _fadingIn;
 		bool _fadingOut;
+		bool _fadeDone;
 	};
 }
 

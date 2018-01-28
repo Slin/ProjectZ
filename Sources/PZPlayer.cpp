@@ -49,20 +49,45 @@ namespace PZ
 
 		RN::InputManager *manager = RN::InputManager::GetSharedInstance();
 
-		static bool hasShownUI = true;
-		if (!hasShownUI) {
-			World::GetSharedInstance()->ShowUI(RNCSTR("test.png"));
-			hasShownUI = true;
+		World *world = World::GetSharedInstance();
+
+		static int startState = 0;
+		if (startState == 0) {
+			world->ShowUI(RNCSTR("start.png"));
+			world->Fade(true, 1.0f);
+			startState++;
+			return;
 		}
-		if (World::GetSharedInstance()->IsInUI()) {
+		else if (startState == 1) {
+			if (world->IsFadeDone()) {
+				startState++;
+			}
+			return;
+		} else if (startState == 2) {
 			if (manager->IsControlToggling(RNCSTR("W"))) {
-				World::GetSharedInstance()->HideUI();
+				world->Fade(false, 1.0f);
+				startState++;
 			}
 			else if (_gamepad) {
 				RN::ButtonControl *buttonCross = _gamepad->GetControlWithName<RN::ButtonControl>(RNCSTR("Button Cross"));
-				if (buttonCross) {
-					World::GetSharedInstance()->HideUI();
+				if (buttonCross && buttonCross->IsPressed()) {
+					world->Fade(false, 1.0f);
+					startState++;
 				}
+			}
+			return;
+		}
+		else if (startState == 3) {
+			if (world->IsFadeDone()) {
+				world->HideUI();
+				world->Fade(true, 1.0f);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 4) {
+			if (world->IsFadeDone()) {
+				startState++;
 			}
 			return;
 		}

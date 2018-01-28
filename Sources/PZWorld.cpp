@@ -31,6 +31,7 @@ namespace PZ
 	{
 		_fadingIn = false;
 		_fadingOut = false;
+		_fadeDone = false;
 
 		if (vrWindow)
 			_vrWindow = vrWindow->Retain();
@@ -115,6 +116,7 @@ namespace PZ
 
 			RN::PostProcessingStage *monitorPass = new RN::PostProcessingStage();
 			_copyEyeToScreenMaterial = RN::Material::WithShaders(_shaderLibrary->GetShaderWithName(RNCSTR("pp_vertex")), _shaderLibrary->GetShaderWithName(RNCSTR("pp_blit_fragment")));
+			_copyEyeToScreenMaterial->SetAmbientColor(RN::Color(0.0f, 0.0f, 0.0f, 1.0f));
 			monitorPass->SetMaterial(_copyEyeToScreenMaterial);
 			resolvePass->AddRenderPass(monitorPass);
 
@@ -383,11 +385,16 @@ namespace PZ
 		}
 
 		if (_fadingIn || _fadingOut) {
-			_fadeTime -= delta;
+			float fadeDelta = delta;
+			if (fadeDelta > 0.03f) {
+				fadeDelta = 0.03f;
+			}
+			_fadeTime -= fadeDelta;
 			float percent = 1.0f;
 			if (_fadeTime <= 0) {
 				_fadingIn = false;
 				_fadingOut = false;
+				_fadeDone = true;
 			}
 			else {
 				percent = 1.0f - _fadeTime / _fadeTimeTotal;
@@ -449,5 +456,21 @@ namespace PZ
 
 	bool World::IsInUI() {
 		return _uiEntity != nullptr;
+	}
+
+	void World::Fade(bool in, float seconds) {
+		_fadingIn = in;
+		_fadingOut = !in;
+		_fadeTime = seconds;
+		_fadeTimeTotal = seconds;
+		_fadeDone = false;
+	}
+
+	bool World::IsFadeDone() {
+		if (_fadeDone) {
+			_fadeDone = false;
+			return true;
+		}
+		return false;
 	}
 }
