@@ -343,6 +343,14 @@ namespace PZ
 			_camera->SetRotation(_cameraRotation);
 		}
 		_camera->Rotate(rotation * delta * 15.0f);
+		if(_camera->GetEulerAngle().y > 85.0f)
+		{
+			_camera->SetWorldRotation(RN::Vector3(_camera->GetEulerAngle().x, 85.0f, _camera->GetEulerAngle().z));
+		}
+		if(_camera->GetEulerAngle().y < -85.0f)
+		{
+			_camera->SetWorldRotation(RN::Vector3(_camera->GetEulerAngle().x, -85.0f, _camera->GetEulerAngle().z));
+		}
 		_cameraRotation = _camera->GetRotation();
 
 		if (_cameraShakeTime > 0) {
