@@ -395,7 +395,7 @@ namespace PZ
 			if(_gamepad && _deathTime <= 0.0f)
 				_gamepad->ExecuteCommand(RNCSTR("rumble"), RN::Number::WithUint8(0));
 		}
-		
+
 		if (_dead) {
 			_deathTime -= delta;
 			
@@ -407,6 +407,13 @@ namespace PZ
 			
 			if (_deathTime < 0) {
 				_deathSequence = 1;
+			}
+		}
+		else {
+			RN::Vector3 vec = RN::Vector3(25.6f, 0, -3.5f) - GetWorldPosition();
+			vec.y = 0;
+			if (vec.GetLength() < 1.0f) {
+				Win();
 			}
 		}
 	}

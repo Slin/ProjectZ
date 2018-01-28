@@ -37,7 +37,7 @@ namespace PZ
 
 		RN::Vector3 vec = player->GetWorldPosition() - GetWorldPosition();
 		vec.y = 0;
-		if (vec.GetLength() < 0.7f) {
+		if (vec.GetLength() < 1.2f) {
 			_entity->SetFlags(RN::SceneNode::Flags::Hidden);
 			player->GiveIDCard();
 			_taken = true;

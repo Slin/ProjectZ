@@ -513,7 +513,7 @@ namespace PZ
 		material->AddTexture(texture);
 		RN::Model *model = new RN::Model(mesh, material);
 		_uiEntity = new RN::Entity(model);
-		_uiEntity->SetPosition(RN::Vector3(0, 0, -0.5f));
+		_uiEntity->SetPosition(RN::Vector3(0, 0.02f, -0.5f));
 		_mainCamera->AddChild(_uiEntity);
 		_uiPlayerPositionBackup = _player->GetWorldPosition();
 		_uiPlayerRotationBackup = _mainCamera->GetWorldRotation();
