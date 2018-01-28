@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	MeleeZombie::MeleeZombie() : Zombie(RN::Model::WithName(RNCSTR("models/zombies/zombie2.sgm")))
+	MeleeZombie::MeleeZombie() : Zombie(RN::Model::WithName(RNCSTR("models/zombies/zombie2.sgm")), 2.2, 2.2)
 	{
 		_attackSounds = new RN::Array();
 		_attackSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/melee1.ogg")));

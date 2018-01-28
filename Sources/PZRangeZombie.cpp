@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	RangeZombie::RangeZombie() : Zombie(RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm")))
+	RangeZombie::RangeZombie() : Zombie(RN::Model::WithName(RNCSTR("models/zombies/zombie1.sgm")), 1.8, 1.8)
 	{
 		RN::Model *model = RN::Model::WithName(RNCSTR("models/zombies/spit.sgm"));
 		for (int i = 0; i < PZ_MAX_SPIT_BLOBS; i++) {
