@@ -101,16 +101,9 @@ namespace PZ
 			}
 			return;
 		} else if (startState == 2) {
-			if (manager->IsControlToggling(RNCSTR("W"))) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
 				world->Fade(false, 1.0f);
 				startState++;
-			}
-			else if (_gamepad) {
-				RN::ButtonControl *buttonCross = _gamepad->GetControlWithName<RN::ButtonControl>(RNCSTR("Button Cross"));
-				if (buttonCross && buttonCross->IsPressed()) {
-					world->Fade(false, 1.0f);
-					startState++;
-				}
 			}
 			return;
 		}

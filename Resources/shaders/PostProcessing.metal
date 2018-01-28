@@ -16,6 +16,11 @@ struct VertexUniforms
 	float4 diffuseColor;
 };
 
+struct FragmentUniforms
+{
+	float4 ambientColor;
+};
+
 struct InputVertex
 {
 	float3 position [[attribute(0)]];
@@ -37,9 +42,9 @@ vertex FragmentVertex pp_vertex(const InputVertex vert [[stage_in]], constant Ve
 	return result;
 }
 
-fragment [[early_fragment_tests]] float4 pp_blit_fragment(FragmentVertex vert [[stage_in]], texture2d<float> texture0 [[texture(0)]], sampler linearClampSampler [[sampler(0)]])
+fragment [[early_fragment_tests]] float4 pp_blit_fragment(FragmentVertex vert [[stage_in]], texture2d<float> texture0 [[texture(0)]], sampler linearClampSampler [[sampler(0)]], constant FragmentUniforms &uniforms [[buffer(1)]])
 {
-	float4 color = texture0.sample(linearClampSampler, vert.texCoords).rgba;
+	float4 color = texture0.sample(linearClampSampler, vert.texCoords).rgba * uniforms.ambientColor.rgba;
 	return color;
 }
 

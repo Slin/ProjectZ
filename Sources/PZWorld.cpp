@@ -117,6 +117,7 @@ namespace PZ
 			RN::PostProcessingStage *monitorPass = new RN::PostProcessingStage();
 			_copyEyeToScreenMaterial = RN::Material::WithShaders(_shaderLibrary->GetShaderWithName(RNCSTR("pp_vertex")), _shaderLibrary->GetShaderWithName(RNCSTR("pp_blit_fragment")));
 			_copyEyeToScreenMaterial->SetAmbientColor(RN::Color(0.0f, 0.0f, 0.0f, 1.0f));
+			monitorPass->SetFramebuffer(_window->GetFramebuffer());
 			monitorPass->SetMaterial(_copyEyeToScreenMaterial);
 			resolvePass->AddRenderPass(monitorPass);
 
