@@ -37,6 +37,8 @@ namespace PZ
 		float _spitNextTime;
 		RN::SteamAudioSource *_mouthSource;
 		RN::Array *_pukeSounds;
+		RN::Array *_idleSounds;
+		float _idleTimer;
 
 		void RunSpit(float delta);
 	};

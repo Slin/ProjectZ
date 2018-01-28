@@ -20,6 +20,14 @@ namespace PZ
 		AddChild(_button->Autorelease());
 		
 		_raycastOffset.z = -0.1f;
+		
+		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/button.ogg"));
+		_switchSource = new RN::SteamAudioSource(audioAsset, false);
+		_switchSource->SetTimeOfFlight(false);
+		_switchSource->SetRepeat(false);
+		_switchSource->SetRadius(0.0f);
+		AddChild(_switchSource->Autorelease());
+		_switchSource->SetPosition(RN::Vector3(0.0f, 0.0f, -0.03f));
 	}
 	
 	ButtonSwitch::~ButtonSwitch()
@@ -55,6 +63,13 @@ namespace PZ
 	void ButtonSwitch::SetActive(bool active)
 	{
 		if(active)
-			Switch::SetActive(active);
+		{
+			if(_switchSource->HasEnded() || !_switchSource->IsPlaying())
+			{
+				_switchSource->Seek(0.0f);
+				_switchSource->Play();
+				Switch::SetActive(active);
+			}
+		}
 	}
 }

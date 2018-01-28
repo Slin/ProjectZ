@@ -10,6 +10,7 @@
 #define __PROJECT_Z_STICKSWITCH_H_
 
 #include "PZSwitch.h"
+#include "RNSteamAudioWorld.h"
 
 namespace PZ
 {
@@ -20,10 +21,13 @@ namespace PZ
 		~StickSwitch();
 		
 		void Update(float delta) override;
+		void SetActive(bool active) override;
 
 	private:
 		RN::Entity *_base;
 		RN::Entity *_stick;
+		
+		RN::SteamAudioSource *_switchSource;
 	};
 }
 

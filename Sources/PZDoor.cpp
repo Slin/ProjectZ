@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	Door::Door(RN::String *filename, RN::Vector3 openOffset) : _state(State::Automatic), _openOffset(openOffset), _didSetInitialState(false), _needsReset(false)
+	Door::Door(RN::String *filename, RN::Vector3 openOffset) : _state(State::Automatic), _openOffset(openOffset), _didSetInitialState(false), _needsReset(false), _isMoving(false)
 	{
 		RN::Model *model = RN::Model::WithName(filename);
 		_door = new RN::Entity(model);
@@ -22,6 +22,13 @@ namespace PZ
 		_body->SetCollisionFilter(World::CollisionType::Doors, World::CollisionType::All);
 		_body->SetEnableKinematic(true);
 		_door->AddAttachment(_body);
+		
+		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/door.ogg"));
+		_doorSource = new RN::SteamAudioSource(audioAsset, false);
+		_doorSource->SetTimeOfFlight(false);
+		_doorSource->SetRadius(0.0f);
+		AddChild(_doorSource->Autorelease());
+		_doorSource->SetPosition(RN::Vector3(0.0f, 0.0f, 0.0f));
 	}
 	
 	Door::~Door()
@@ -74,7 +81,19 @@ namespace PZ
 			RN::Vector3 closeDirection = -_door->GetPosition();
 			if(closeDirection.GetLength() > delta)
 			{
+				if(!_isMoving)
+				{
+					_doorSource->Seek(0.0f);
+					_doorSource->Play();
+				}
+				
 				closeDirection.Normalize(delta);
+				_isMoving = true;
+			}
+			else
+			{
+				_doorSource->Stop();
+				_isMoving = false;
 			}
 			_body->SetKinematicTarget(GetWorldRotation().GetRotatedVector(closeDirection)+_door->GetWorldPosition(), GetWorldRotation());
 		}
@@ -84,7 +103,19 @@ namespace PZ
 			RN::Vector3 openDirection = _openOffset-_door->GetPosition();
 			if(openDirection.GetLength() > delta)
 			{
+				if(!_isMoving)
+				{
+					_doorSource->Seek(0.0f);
+					_doorSource->Play();
+				}
+				
 				openDirection.Normalize(delta);
+				_isMoving = true;
+			}
+			else
+			{
+				_doorSource->Stop();
+				_isMoving = false;
 			}
 			_body->SetKinematicTarget(GetWorldRotation().GetRotatedVector(openDirection)+_door->GetWorldPosition(), GetWorldRotation());
 		}

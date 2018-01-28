@@ -10,6 +10,7 @@
 #define __PROJECT_Z_BUTTONSWITCH_H_
 
 #include "PZSwitch.h"
+#include "RNSteamAudioWorld.h"
 
 namespace PZ
 {
@@ -26,6 +27,7 @@ namespace PZ
 		RN::Entity *_base;
 		RN::Entity *_button;
 		
+		RN::SteamAudioSource *_switchSource;
 	};
 }
 

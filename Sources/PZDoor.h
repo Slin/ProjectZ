@@ -11,6 +11,7 @@
 
 #include <Rayne.h>
 #include "RNPhysXWorld.h"
+#include "RNSteamAudioWorld.h"
 
 namespace PZ
 {
@@ -38,6 +39,8 @@ namespace PZ
 		State _initialState;
 		bool _didSetInitialState;
 		bool _needsReset;
+		RN::SteamAudioSource *_doorSource;
+		bool _isMoving;
 		
 		State _state;
 		

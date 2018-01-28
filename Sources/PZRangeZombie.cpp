@@ -26,17 +26,25 @@ namespace PZ
 		_pukeSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/pukeattack1.ogg")));
 		_pukeSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/pukeattack2.ogg")));
 		
+		_idleSounds = new RN::Array();
+		_idleSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/idle1.ogg")));
+		_idleSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/idle2.ogg")));
+		_idleSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/idle3.ogg")));
+		
 		_mouthSource = new RN::SteamAudioSource(nullptr, false);
 		_mouthSource->SetTimeOfFlight(false);
 		_mouthSource->SetRadius(0.0f);
 		//_mouthSource->SetGain(0.1f);
 		AddChild(_mouthSource->Autorelease());
 		_mouthSource->SetPosition(RN::Vector3(0.0f, 1.65f, -0.1f));
+		
+		_idleTimer = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0, 20);
 	}
 
 	RangeZombie::~RangeZombie()
 	{
 		_pukeSounds->Release();
+		_idleSounds->Release();
 	}
 
 	void RangeZombie::Update(float delta)
@@ -77,6 +85,7 @@ namespace PZ
 			{
 				int pukeSoundIndex = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, _pukeSounds->GetCount());
 				_mouthSource->SetAudioAsset(_pukeSounds->GetObjectAtIndex<RN::AudioAsset>(pukeSoundIndex));
+				_mouthSource->SetGain(1.0f);
 				_mouthSource->Seek(0.0);
 				_mouthSource->Play();
 			}
@@ -116,6 +125,20 @@ namespace PZ
 			}
 			_spitBlobIndex++;
 			_spitBlobIndex %= PZ_MAX_SPIT_BLOBS;
+		}
+		
+		if(!_following)
+		{
+			_idleTimer -= delta;
+			if(_idleTimer < 0.0 && (_mouthSource->IsPlaying() || _mouthSource->HasEnded()))
+			{
+				_idleTimer = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(10, 20);
+				int idleSoundIndex = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, _idleSounds->GetCount());
+				_mouthSource->SetAudioAsset(_idleSounds->GetObjectAtIndex<RN::AudioAsset>(idleSoundIndex));
+				_mouthSource->SetGain(0.5f);
+				_mouthSource->Seek(0.0);
+				_mouthSource->Play();
+			}
 		}
 	}
 }

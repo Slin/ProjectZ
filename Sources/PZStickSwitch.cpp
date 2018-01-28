@@ -21,6 +21,14 @@ namespace PZ
 		
 		_stick->SetRotation(RN::Vector3(0.0f, 0.0f, 90.0f));
 		_raycastOffset.x = -0.1f;
+		
+		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/switch.ogg"));
+		_switchSource = new RN::SteamAudioSource(audioAsset, false);
+		_switchSource->SetTimeOfFlight(false);
+		_switchSource->SetRepeat(false);
+		_switchSource->SetRadius(0.0f);
+		AddChild(_switchSource->Autorelease());
+		_switchSource->SetPosition(RN::Vector3(0.0f, 0.0f, -0.03f));
 	}
 	
 	StickSwitch::~StickSwitch()
@@ -47,6 +55,16 @@ namespace PZ
 				diff = delta*70.0f;
 			
 			_stick->SetRotation(_stick->GetRotation() + RN::Vector3(0.0f, 0.0f, diff));
+		}
+	}
+	
+	void StickSwitch::SetActive(bool active)
+	{
+		if(_switchSource->HasEnded() || !_switchSource->IsPlaying())
+		{
+			_switchSource->Seek(0.0f);
+			_switchSource->Play();
+			Switch::SetActive(active);
 		}
 	}
 }

@@ -22,6 +22,13 @@ namespace PZ
 		~MeleeZombie();
 
 		void Update(float delta) override;
+		
+	private:
+		RN::SteamAudioSource *_mouthSource;
+		RN::Array *_attackSounds;
+		RN::Array *_idleSounds;
+		
+		float _idleTimer;
 	};
 }
 
