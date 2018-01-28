@@ -244,7 +244,12 @@ namespace PZ
 		else if (_deathSequence == 5) {
 			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
 				world->Fade(false, fadeSeconds);
-				_deathSequence++;
+				if (_deathWasSuccess) {
+					_deathSequence++;
+				}
+				else {
+					_deathSequence += 4;
+				}
 			}
 			return;
 		}

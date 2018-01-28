@@ -24,6 +24,7 @@ namespace PZ
 
 	private:
 		RN::Entity *_entity;
+		bool _taken;
 	};
 }
 

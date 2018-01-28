@@ -15,6 +15,7 @@ namespace PZ
 	{
 		_entity = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/id_card.sgm")));
 		AddChild(_entity->Autorelease());
+		_taken = false;
 	}
 	
 	IDCard::~IDCard()
@@ -26,10 +27,10 @@ namespace PZ
 	{
 		Player *player = World::GetSharedInstance()->GetPlayer();
 
-		if (_entity == nullptr) {
+		if (_taken) {
 			if (player->IsDead()) {
-				_entity = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/id_card.sgm")));
-				AddChild(_entity->Autorelease());
+				_entity->SetFlags(0);
+				_taken = false;
 			}
 			return;
 		}
@@ -37,10 +38,9 @@ namespace PZ
 		RN::Vector3 vec = player->GetWorldPosition() - GetWorldPosition();
 		vec.y = 0;
 		if (vec.GetLength() < 0.7f) {
-			RemoveChild(_entity);
-			_entity = nullptr;
-
+			_entity->SetFlags(RN::SceneNode::Flags::Hidden);
 			player->GiveIDCard();
+			_taken = true;
 		}
 	}
 }
