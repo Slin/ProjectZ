@@ -70,6 +70,7 @@ namespace PZ
 		_deathTime = 0.0f;
 		_invulnerableTime = 0.0f;
 		_cameraShakeTime = 0.0f;
+		_deathSequence = 0;
 	}
 	
 	Player::~Player()
@@ -88,10 +89,11 @@ namespace PZ
 
 		World *world = World::GetSharedInstance();
 
+		const float fadeSeconds = 0.7f;
 		static int startState = 0;
 		if (startState == 0) {
 			world->ShowUI(RNCSTR("start.png"));
-			world->Fade(true, 1.0f);
+			world->Fade(true, fadeSeconds);
 			startState++;
 			return;
 		}
@@ -102,7 +104,7 @@ namespace PZ
 			return;
 		} else if (startState == 2) {
 			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
-				world->Fade(false, 1.0f);
+				world->Fade(false, fadeSeconds);
 				startState++;
 			}
 			return;
@@ -110,7 +112,7 @@ namespace PZ
 		else if (startState == 3) {
 			if (world->IsFadeDone()) {
 				world->HideUI();
-				world->Fade(true, 1.0f);
+				world->Fade(true, fadeSeconds);
 				startState++;
 			}
 			return;
@@ -118,6 +120,55 @@ namespace PZ
 		else if (startState == 4) {
 			if (world->IsFadeDone()) {
 				startState++;
+			}
+			return;
+		}
+
+		if (_deathSequence == 1) {
+			world->Fade(false, fadeSeconds);
+			_deathSequence++;
+			return;
+		}
+		else if (_deathSequence == 2) {
+			if (world->IsFadeDone()) {
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 3) {
+			world->ShowUI(RNCSTR("dead.png"));
+			world->Fade(true, fadeSeconds);
+			_deathSequence++;
+			return;
+		}
+		else if (_deathSequence == 4) {
+			if (world->IsFadeDone()) {
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 5) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
+				world->Fade(false, fadeSeconds);
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 6) {
+			if (world->IsFadeDone()) {
+				world->HideUI();
+				_dead = false;
+				SetPosition(_spawnPoint);
+				SetRotation(_spawnRotation);
+				world->Fade(true, fadeSeconds);
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 7) {
+			if (world->IsFadeDone()) {
+				_invulnerableTime = 3;
+				_deathSequence = 0;
 			}
 			return;
 		}
@@ -234,10 +285,7 @@ namespace PZ
 			}
 			
 			if (_deathTime < 0) {
-				_dead = false;
-				SetPosition(_spawnPoint);
-				SetRotation(_spawnRotation);
-				_invulnerableTime = 3;
+				_deathSequence = 1;
 			}
 		}
 	}

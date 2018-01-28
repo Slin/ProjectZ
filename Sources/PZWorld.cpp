@@ -414,8 +414,6 @@ namespace PZ
 			_fadeTime -= fadeDelta;
 			float percent = 1.0f;
 			if (_fadeTime <= 0) {
-				_fadingIn = false;
-				_fadingOut = false;
 				_fadeDone = true;
 			}
 			else {
@@ -424,7 +422,10 @@ namespace PZ
 			if (_fadingOut) {
 				percent = 1.0f - percent;
 			}
-			
+			if (_fadeDone) {
+				_fadingIn = false;
+				_fadingOut = false;
+			}
 			_currentFadeColor = RN::Vector3(percent);
 		}
 	}

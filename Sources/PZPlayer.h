@@ -47,6 +47,7 @@ namespace PZ
 		bool _storeSpawnPoint;
 		bool _dead;
 		float _deathTime;
+		int _deathSequence;
 		float _invulnerableTime;
 		float _cameraShakeTime;
 		RN::Quaternion _cameraRotation;
