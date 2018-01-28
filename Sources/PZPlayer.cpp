@@ -329,4 +329,12 @@ namespace PZ
 		}
 		return active;
 	}
+
+	void Player::GiveIDCard() {
+		_hasIDCard = true;
+	}
+
+	bool Player::HasIDCard() {
+		return _hasIDCard;
+	}
 }

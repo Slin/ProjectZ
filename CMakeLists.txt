@@ -35,6 +35,7 @@ set(SOURCES
 	Sources/PZSwitch.cpp
 	Sources/PZButtonSwitch.cpp
 	Sources/PZStickSwitch.cpp
+	Sources/PZIDCard.cpp
 	Sources/main.cpp)
 
 set(HEADERS
@@ -47,7 +48,8 @@ set(HEADERS
 	Sources/PZStickSwitch.h
 	Sources/PZZombie.h
 	Sources/PZRangeZombie.h
-	Sources/PZMeleeZombie.h)
+	Sources/PZMeleeZombie.h
+	Sources/PZIDCard.h)
 
 set(RESOURCES
 	manifest.json

@@ -29,6 +29,9 @@ namespace PZ
 		
 		bool IsActivatePressed();
 
+		void GiveIDCard();
+		bool HasIDCard();
+
 	private:
 		RN::SceneNode *_camera;
 		RN::PhysXKinematicController *_controller;
@@ -51,6 +54,8 @@ namespace PZ
 		float _invulnerableTime;
 		float _cameraShakeTime;
 		RN::Quaternion _cameraRotation;
+
+		bool _hasIDCard;
 	};
 }
 

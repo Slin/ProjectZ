@@ -22,6 +22,7 @@
 #include "PZDoor.h"
 #include "PZButtonSwitch.h"
 #include "PZStickSwitch.h"
+#include "PZIDCard.h"
 
 namespace PZ
 {

@@ -340,6 +340,10 @@ namespace PZ
 		zombie = new MeleeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(24.0, 0.0, 8.0));
+
+		IDCard *idCard = new IDCard();
+		AddNode(idCard->Autorelease());
+		idCard->SetWorldPosition(RN::Vector3(-13.0f, 0, 1.0f));
 	}
 
 	void World::UpdateForWindowSize() const
