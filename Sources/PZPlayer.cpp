@@ -108,6 +108,10 @@ namespace PZ
 				world->Fade(false, fadeSeconds);
 				startState++;
 			}
+			else if (manager->IsControlToggling(RNCSTR("S"))) {
+				world->Fade(false, fadeSeconds);
+				startState = 15;
+			}
 			return;
 		}
 		else if (startState == 3) {
