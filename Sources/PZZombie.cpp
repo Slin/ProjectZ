@@ -90,6 +90,7 @@ namespace PZ
 			}
 			else {
 				_navigationAgent->SetTarget(GetWorldPosition());
+				_following = false;
 			}
 		}
 		else {
@@ -133,6 +134,13 @@ namespace PZ
 		if (_following != prevFollow) {
 			RN::RecastAgent::Settings settings;
 			settings.maxSpeed = _following ? _followSpeed : _normalSpeed;
+			if (!_following && player->IsDead()) {
+				settings.maxSpeed = 0;
+				settings.maxAcceleration = 10000;
+			}
+			else {
+				settings.maxAcceleration = 5;
+			}
 			_navigationAgent->UpdateSettings(settings);
 		}
 	}
