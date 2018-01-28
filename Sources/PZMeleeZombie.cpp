@@ -28,7 +28,7 @@ namespace PZ
 		_mouthSource->SetRadius(0.0f);
 		_mouthSource->SetGain(0.5f);
 		AddChild(_mouthSource->Autorelease());
-		_mouthSource->SetPosition(RN::Vector3(0.0f, 1.65f, -0.1f));
+		_mouthSource->SetPosition(RN::Vector3(0.0f, 0.8f, -0.1f));
 		
 		_idleTimer = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0, 20);
 	}
