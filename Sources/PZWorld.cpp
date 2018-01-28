@@ -251,7 +251,7 @@ namespace PZ
 		
 		switch_ = new ButtonSwitch();
 		AddNode(switch_);
-//		switch_->SetNeedsKey(true);
+		switch_->SetNeedsKey(false);
 		switch_->SetWorldPosition(RN::Vector3(-4.5f, 1.0f, 3.1f));
 		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
 		switch_->SetAction([door](bool active){
@@ -338,6 +338,7 @@ namespace PZ
 		
 		switch_ = new ButtonSwitch();
 		AddNode(switch_);
+		switch_->SetNeedsKey(false);
 		switch_->SetWorldPosition(RN::Vector3(-4.5f, 1.0f, -6.9f));
 		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
 		switch_->SetAction([door](bool active){
@@ -386,10 +387,14 @@ namespace PZ
 		zombie = new MeleeZombie();
 		AddNode(zombie->Autorelease());
 		zombie->SetWorldPosition(RN::Vector3(24.0, 0.0, 8.0));
+		
+		zombie = new MeleeZombie();
+		AddNode(zombie->Autorelease());
+		zombie->SetWorldPosition(RN::Vector3(18.0, 0.0, 0.5));
 
 		IDCard *idCard = new IDCard();
 		AddNode(idCard->Autorelease());
-		idCard->SetWorldPosition(RN::Vector3(-13.0f, 0, 1.0f));
+		idCard->SetWorldPosition(RN::Vector3(-6.4f, 1.065, -11.7f));
 	}
 
 	void World::UpdateForWindowSize() const

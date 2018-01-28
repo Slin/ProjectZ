@@ -71,7 +71,7 @@ namespace PZ
 
 		if (canSeePlayer) {
 			_following = true;
-			_followTime = 1.5f;
+			_followTime = 1.0f;
 		}
 		else if (_followTime > 0) {
 			_followTime -= delta;

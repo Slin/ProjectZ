@@ -11,7 +11,7 @@
 
 namespace PZ
 {
-	Switch::Switch() : _isActive(false), _needsReset(false), _needsKey(false)
+	Switch::Switch() : _isActive(false), _needsReset(false), _needsKey(true)
 	{
 		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/locked.ogg"));
 		_lockedSource = new RN::SteamAudioSource(audioAsset, false);
