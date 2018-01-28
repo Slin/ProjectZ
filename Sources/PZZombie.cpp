@@ -29,12 +29,12 @@ namespace PZ
 		
 		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/slurp.ogg"));
 		_slurpSource = new RN::SteamAudioSource(audioAsset, false);
-		_slurpSource->SetWorldPosition(RN::Vector3(1.6f, 1.0f, -1.2f));
 		_slurpSource->SetTimeOfFlight(false);
 		_slurpSource->Play();
 		_slurpSource->SetRepeat(true);
 		_slurpSource->SetRadius(0.0f);
 		AddChild(_slurpSource->Autorelease());
+		_slurpSource->SetPosition(RN::Vector3(0.0f, 0.0f, 0.0f));
 	}
 
 	Zombie::~Zombie()

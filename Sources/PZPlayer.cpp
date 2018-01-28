@@ -191,7 +191,7 @@ namespace PZ
 			{
 				_stepTimer = 0.4f;
 				int newStepIndex = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, _stepSounds->GetCount());
-				float pitch = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.75f, 1.25f);
+				float pitch = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(0.9f, 1.1f);
 				if(_isLeftStep)
 				{
 					_leftStepSource->SetAudioAsset(_stepSounds->GetObjectAtIndex<RN::AudioAsset>(newStepIndex));

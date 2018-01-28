@@ -21,11 +21,22 @@ namespace PZ
 		}
 		_spitBlobIndex = 0;
 		_spitNextTime = 0;
+		
+		_pukeSounds = new RN::Array();
+		_pukeSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/pukeattack1.ogg")));
+		_pukeSounds->AddObject(RN::AudioAsset::WithName(RNCSTR("audio/pukeattack2.ogg")));
+		
+		_mouthSource = new RN::SteamAudioSource(nullptr, false);
+		_mouthSource->SetTimeOfFlight(false);
+		_mouthSource->SetRadius(0.0f);
+		//_mouthSource->SetGain(0.1f);
+		AddChild(_mouthSource->Autorelease());
+		_mouthSource->SetPosition(RN::Vector3(0.0f, 1.65f, -0.1f));
 	}
 
 	RangeZombie::~RangeZombie()
 	{
-		//		SafeRelease(_controller);
+		_pukeSounds->Release();
 	}
 
 	void RangeZombie::Update(float delta)
@@ -61,6 +72,14 @@ namespace PZ
 		}
 		if (spitting) {
 			spitting = World::GetSharedInstance()->IsPlayerVisibleFrom(GetWorldPosition());
+			
+			if(!_mouthSource->IsPlaying() || _mouthSource->HasEnded())
+			{
+				int pukeSoundIndex = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, _pukeSounds->GetCount());
+				_mouthSource->SetAudioAsset(_pukeSounds->GetObjectAtIndex<RN::AudioAsset>(pukeSoundIndex));
+				_mouthSource->Seek(0.0);
+				_mouthSource->Play();
+			}
 		}
 		if (!anyActive && !spitting) {
 			_spitNextTime = 0.5f;

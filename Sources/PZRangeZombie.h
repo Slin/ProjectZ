@@ -35,6 +35,8 @@ namespace PZ
 		SpitBlob _spitBlobs[PZ_MAX_SPIT_BLOBS];
 		int _spitBlobIndex;
 		float _spitNextTime;
+		RN::SteamAudioSource *_mouthSource;
+		RN::Array *_pukeSounds;
 
 		void RunSpit(float delta);
 	};
