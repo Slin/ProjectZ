@@ -11,9 +11,13 @@
 
 namespace PZ
 {
-	Zombie::Zombie(RN::Model *model)
+	Zombie::Zombie(RN::Model *model, float normalSpeed, float followSpeed)
 	{
+		_normalSpeed = normalSpeed;
+		_followSpeed = followSpeed;
+
 		RN::RecastAgent::Settings settings;
+		settings.maxSpeed = _normalSpeed;
 		_navigationAgent = new RN::RecastAgent(settings);
 		AddAttachment(_navigationAgent);
 
@@ -44,6 +48,8 @@ namespace PZ
 
 	void Zombie::Update(float delta)
 	{
+		bool prevFollow = _following;
+
 		if (_storeSpawnPoint) {
 			_spawnPoint = GetWorldPosition();
 			_storeSpawnPoint = false;
@@ -123,5 +129,11 @@ namespace PZ
 		_slurpSource->SetGain(_slurpTime);
 
 		_previousPosition = GetWorldPosition();
+
+		if (_following != prevFollow) {
+			RN::RecastAgent::Settings settings;
+			settings.maxSpeed = _following ? _followSpeed : _normalSpeed;
+			_navigationAgent->UpdateSettings(settings);
+		}
 	}
 }

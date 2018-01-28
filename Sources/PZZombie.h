@@ -18,7 +18,7 @@ namespace PZ
 	class Zombie : public RN::SceneNode
 	{
 	public:
-		Zombie(RN::Model *model);
+		Zombie(RN::Model *model, float normalSpeed = 2, float followSpeed = 3);
 		~Zombie();
 
 		void Update(float delta) override;
@@ -28,6 +28,9 @@ namespace PZ
 		RN::RecastAgent *_navigationAgent;
 		RN::Vector3 _previousPosition;
 		RN::SteamAudioSource *_slurpSource;
+
+		float _normalSpeed;
+		float _followSpeed;
 
 		bool _following;
 		float _followTime;
