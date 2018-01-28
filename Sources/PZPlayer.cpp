@@ -92,7 +92,6 @@ namespace PZ
 
 		const float fadeSeconds = 0.7f;
 		static int startState = 0;
-		static bool hasShownStory = false;
 		if (startState == 0) {
 			world->ShowUI(RNCSTR("start.png"));
 			world->Fade(true, fadeSeconds);
@@ -113,28 +112,89 @@ namespace PZ
 		}
 		else if (startState == 3) {
 			if (world->IsFadeDone()) {
-				if (!hasShownStory) {
-					world->ShowUI(RNCSTR("story.png"));
-					world->Fade(true, fadeSeconds);
-					startState++;
-					hasShownStory = true;
-				}
-				else {
-					world->HideUI();
-					world->Fade(true, fadeSeconds);
-					startState += 3;
-				}
+				world->ShowUI(RNCSTR("start2.png"));
+				world->Fade(true, fadeSeconds);
+				startState++;
 			}
 			return;
 		}
 		else if (startState == 4) {
+			if (world->IsFadeDone()) {
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 5) {
 			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
 				world->Fade(false, fadeSeconds);
 				startState++;
 			}
 			return;
 		}
-		else if (startState == 5) {
+		else if (startState == 6) {
+			if (world->IsFadeDone()) {
+				world->ShowUI(RNCSTR("start3.png"));
+				world->Fade(true, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 7) {
+			if (world->IsFadeDone()) {
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 8) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
+				world->Fade(false, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 9) {
+			if (world->IsFadeDone()) {
+				world->ShowUI(RNCSTR("start4.png"));
+				world->Fade(true, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 10) {
+			if (world->IsFadeDone()) {
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 11) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
+				world->Fade(false, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 12) {
+			if (world->IsFadeDone()) {
+				world->ShowUI(RNCSTR("start5.png"));
+				world->Fade(true, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 13) {
+			if (world->IsFadeDone()) {
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 14) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
+				world->Fade(false, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 15) {
 			if (world->IsFadeDone()) {
 				world->HideUI();
 				world->Fade(true, fadeSeconds);
@@ -142,7 +202,7 @@ namespace PZ
 			}
 			return;
 		}
-		else if (startState == 6) {
+		else if (startState == 16) {
 			if (world->IsFadeDone()) {
 				startState++;
 			}
