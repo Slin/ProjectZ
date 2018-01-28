@@ -11,6 +11,7 @@
 
 #include <Rayne.h>
 #include <RNRecastAgent.h>
+#include <RNSteamAudioWorld.h>
 
 namespace PZ
 {
@@ -26,9 +27,11 @@ namespace PZ
 		RN::Entity *_zombie;
 		RN::RecastAgent *_navigationAgent;
 		RN::Vector3 _previousPosition;
+		RN::SteamAudioSource *_slurpSource;
 
 		bool _following;
 		float _followTime;
+		float _slurpTime;
 		bool _returnToSpawn;
 		RN::Vector3 _spawnPoint;
 		bool _storeSpawnPoint;

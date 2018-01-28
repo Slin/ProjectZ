@@ -159,7 +159,7 @@ namespace PZ
 
 		if(foundOutputAudioDevice)
 		{
-			_audioWorld = new RN::SteamAudioWorld(foundOutputAudioDevice);
+			_audioWorld = new RN::SteamAudioWorld(foundOutputAudioDevice, 3, 48000, 480);
 			AddAttachment(_audioWorld);
 
 			if(_vrCamera)
@@ -210,7 +210,7 @@ namespace PZ
 			wallAudioMaterial.scattering = 0.3f;
 			_audioWorld->AddMaterial(wallAudioMaterial);*/
 
-/*			RN::Model::LODStage *lodStage = levelModel->GetLODStage(0);
+			RN::Model::LODStage *lodStage = levelModel->GetLODStage(0);
 			for(int i = 0; i < lodStage->GetCount(); i++)
 			{
 				//RN::Material *material = lodStage->GetMaterialAtIndex(0);
@@ -223,16 +223,16 @@ namespace PZ
 				_audioWorld->AddStaticGeometry(groundAudioGeometry);
 			}
 
-			_audioWorld->UpdateScene();*/
+			_audioWorld->UpdateScene();
 
 /*			RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/neverstop.ogg"));
 			RN::SteamAudioSource *musicSource = new RN::SteamAudioSource(audioAsset, false);
-			musicSource->SetWorldPosition(RN::Vector3(0.0f, 1.0f, 0.0f));
-			musicSource->SetTimeOfFlight(false);
+			musicSource->SetWorldPosition(RN::Vector3(1.6f, 1.0f, -1.2f));
+			musicSource->SetTimeOfFlight(true);
 			musicSource->Play();
 			musicSource->SetRepeat(true);
-			musicSource->SetRadius(0.5f);
-			musicSource->SetGain(0.1f);
+			musicSource->SetRadius(0.0f);
+//			musicSource->SetGain(0.1f);
 			AddNode(musicSource);*/
 		}
 		
@@ -248,7 +248,7 @@ namespace PZ
 		switch_->SetWorldPosition(RN::Vector3(-4.5f, 1.0f, 3.1f));
 		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
 		switch_->SetAction([door](bool active){
-			door->SetState(Door::State::Automatic);
+			door->SetState(Door::State::Opened);
 		});
 		
 		door = new Door(RNCSTR("models/levels/door2.sgm"), RN::Vector3(0.0f, 0.0f, -1.8f));

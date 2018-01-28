@@ -11,6 +11,7 @@
 
 #include <Rayne.h>
 #include <RNPhysXWorld.h>
+#include <RNSteamAudioSource.h>
 
 namespace PZ
 {
@@ -32,6 +33,14 @@ namespace PZ
 		RN::SceneNode *_camera;
 		RN::PhysXKinematicController *_controller;
 		RN::InputDevice *_gamepad;
+		
+		RN::Array *_stepSounds;
+		RN::Array *_dieSounds;
+		bool _isLeftStep;
+		float _stepTimer;
+		RN::SteamAudioSource *_leftStepSource;
+		RN::SteamAudioSource *_rightStepSource;
+		RN::SteamAudioSource *_mouthSource;
 
 		RN::Vector3 _spawnPoint;
 		RN::Quaternion _spawnRotation;

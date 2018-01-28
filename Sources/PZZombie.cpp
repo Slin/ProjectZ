@@ -19,10 +19,22 @@ namespace PZ
 
 		_zombie = new RN::Entity(model);
 		AddChild(_zombie->Autorelease());
+		_zombie->SetPosition(RN::Vector3(0.0f, -0.15f, 0.0f));
 
 		_following = false;
 		_storeSpawnPoint = true;
 		_returnToSpawn = false;
+		_followTime = 0.0f;
+		_slurpTime = 0.0f;
+		
+		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/slurp.ogg"));
+		_slurpSource = new RN::SteamAudioSource(audioAsset, false);
+		_slurpSource->SetWorldPosition(RN::Vector3(1.6f, 1.0f, -1.2f));
+		_slurpSource->SetTimeOfFlight(false);
+		_slurpSource->Play();
+		_slurpSource->SetRepeat(true);
+		_slurpSource->SetRadius(0.0f);
+		AddChild(_slurpSource->Autorelease());
 	}
 
 	Zombie::~Zombie()
@@ -95,6 +107,20 @@ namespace PZ
 			RN::Quaternion lookatRotation = RN::Quaternion::WithLookAt(-lookDir);
 			_zombie->SetWorldRotation(lookatRotation);
 		}
+		
+		if(_following)
+		{
+			_slurpTime += delta*2.0f;
+			if(_slurpTime > 0.7f)
+				_slurpTime = 0.7f;
+		}
+		else
+		{
+			_slurpTime -= delta*2.0f;
+			if(_slurpTime < 0.0f)
+				_slurpTime = 0.0f;
+		}
+		_slurpSource->SetGain(_slurpTime);
 
 		_previousPosition = GetWorldPosition();
 	}
