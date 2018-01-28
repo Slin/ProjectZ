@@ -25,6 +25,7 @@ namespace PZ
 		void Update(float delta) override;
 
 		void Die();
+		void Win();
 		bool IsDead();
 		
 		bool IsActivatePressed();
@@ -51,6 +52,7 @@ namespace PZ
 		bool _dead;
 		float _deathTime;
 		int _deathSequence;
+		bool _deathWasSuccess;
 		float _invulnerableTime;
 		float _cameraShakeTime;
 		RN::Quaternion _cameraRotation;

@@ -71,6 +71,7 @@ namespace PZ
 		_invulnerableTime = 0.0f;
 		_cameraShakeTime = 0.0f;
 		_deathSequence = 0;
+		_deathWasSuccess = false;
 	}
 	
 	Player::~Player()
@@ -91,6 +92,7 @@ namespace PZ
 
 		const float fadeSeconds = 0.7f;
 		static int startState = 0;
+		static bool hasShownStory = false;
 		if (startState == 0) {
 			world->ShowUI(RNCSTR("start.png"));
 			world->Fade(true, fadeSeconds);
@@ -111,13 +113,36 @@ namespace PZ
 		}
 		else if (startState == 3) {
 			if (world->IsFadeDone()) {
+				if (!hasShownStory) {
+					world->ShowUI(RNCSTR("story.png"));
+					world->Fade(true, fadeSeconds);
+					startState++;
+					hasShownStory = true;
+				}
+				else {
+					world->HideUI();
+					world->Fade(true, fadeSeconds);
+					startState += 3;
+				}
+			}
+			return;
+		}
+		else if (startState == 4) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
+				world->Fade(false, fadeSeconds);
+				startState++;
+			}
+			return;
+		}
+		else if (startState == 5) {
+			if (world->IsFadeDone()) {
 				world->HideUI();
 				world->Fade(true, fadeSeconds);
 				startState++;
 			}
 			return;
 		}
-		else if (startState == 4) {
+		else if (startState == 6) {
 			if (world->IsFadeDone()) {
 				startState++;
 			}
@@ -136,7 +161,12 @@ namespace PZ
 			return;
 		}
 		else if (_deathSequence == 3) {
-			world->ShowUI(RNCSTR("dead.png"));
+			if (_deathWasSuccess) {
+				world->ShowUI(RNCSTR("success.png"));
+			}
+			else {
+				world->ShowUI(RNCSTR("dead.png"));
+			}
 			world->Fade(true, fadeSeconds);
 			_deathSequence++;
 			return;
@@ -156,16 +186,38 @@ namespace PZ
 		}
 		else if (_deathSequence == 6) {
 			if (world->IsFadeDone()) {
-				world->HideUI();
-				_dead = false;
-				SetPosition(_spawnPoint);
-				SetRotation(_spawnRotation);
+				world->ShowUI(RNCSTR("start.png"));
 				world->Fade(true, fadeSeconds);
 				_deathSequence++;
 			}
 			return;
 		}
 		else if (_deathSequence == 7) {
+			if (world->IsFadeDone()) {
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 8) {
+			if (manager->IsControlToggling(RNCSTR("W")) || IsActivatePressed()) {
+				world->Fade(false, fadeSeconds);
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 9) {
+			if (world->IsFadeDone()) {
+				world->HideUI();
+				_dead = false;
+				SetPosition(_spawnPoint);
+				SetRotation(_spawnRotation);
+				world->Fade(true, fadeSeconds);
+				_hasIDCard = false;
+				_deathSequence++;
+			}
+			return;
+		}
+		else if (_deathSequence == 10) {
 			if (world->IsFadeDone()) {
 				_invulnerableTime = 3;
 				_deathSequence = 0;
@@ -295,6 +347,7 @@ namespace PZ
 			return;
 		}
 		_dead = true;
+		_deathWasSuccess = false;
 		_deathTime = 3;
 		_cameraShakeTime = 0.5f;
 		
@@ -308,6 +361,16 @@ namespace PZ
 			_gamepad->ExecuteCommand(RNCSTR("light"), RN::Value::WithVector3(RN::Vector3(1.0f, 0.0f, 0.0f)));
 			_gamepad->ExecuteCommand(RNCSTR("rumble"), RN::Number::WithUint8(255));
 		}
+	}
+
+	void Player::Win() {
+		if (_dead) {
+			return;
+		}
+		_dead = true;
+		_deathWasSuccess = true;
+		_deathTime = 3;
+		_cameraShakeTime = 0;
 	}
 
 	bool Player::IsDead() {

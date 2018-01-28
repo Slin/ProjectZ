@@ -455,7 +455,7 @@ namespace PZ
 	void World::ShowUI(const RN::String *file) {
 		HideUI();
 
-		RN::Mesh *mesh = RN::Mesh::WithTexturedPlane(RN::Quaternion::WithEulerAngle(RN::Vector3(0, 90.0f, 0)), RN::Vector3(), RN::Vector2(0.35f, 0.35f));
+		RN::Mesh *mesh = RN::Mesh::WithTexturedPlane(RN::Quaternion::WithEulerAngle(RN::Vector3(0, 90.0f, 0)), RN::Vector3(), RN::Vector2(0.64f, 0.64f));
 		RN::Shader *vertexShader = RN::Renderer::GetActiveRenderer()->GetDefaultShader(RN::Shader::Type::Vertex, RN::Shader::Options::WithMesh(mesh));
 		RN::Shader *fragmentShader = RN::Renderer::GetActiveRenderer()->GetDefaultShader(RN::Shader::Type::Fragment, RN::Shader::Options::WithMesh(mesh));
 		RN::Material *material = RN::Material::WithShaders(vertexShader, fragmentShader);

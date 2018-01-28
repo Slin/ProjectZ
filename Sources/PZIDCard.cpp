@@ -24,11 +24,16 @@ namespace PZ
 	
 	void IDCard::Update(float delta)
 	{
+		Player *player = World::GetSharedInstance()->GetPlayer();
+
 		if (_entity == nullptr) {
+			if (player->IsDead()) {
+				_entity = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/id_card.sgm")));
+				AddChild(_entity->Autorelease());
+			}
 			return;
 		}
 
-		Player *player = World::GetSharedInstance()->GetPlayer();
 		RN::Vector3 vec = player->GetWorldPosition() - GetWorldPosition();
 		vec.y = 0;
 		if (vec.GetLength() < 0.7f) {
