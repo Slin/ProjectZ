@@ -23,7 +23,7 @@ namespace PZ
 		_body->SetEnableKinematic(true);
 		_door->AddAttachment(_body);
 		
-		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/door.ogg"));
+		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/door2.ogg"));
 		_doorSource = new RN::SteamAudioSource(audioAsset, false);
 		_doorSource->SetTimeOfFlight(false);
 		_doorSource->SetRadius(0.0f);
