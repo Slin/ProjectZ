@@ -33,8 +33,26 @@ namespace PZ
 	{
 		RN::SceneNode::Update(delta);
 		
-		float distanceToPlayer = (World::GetSharedInstance()->GetPlayer()->GetWorldPosition()-GetWorldPosition()).GetLength();
-		if((distanceToPlayer > 3.0f && _state == State::Automatic) || _state == State::Closed)
+		bool isTriggered = false;
+		
+		RN::Vector3 from = GetWorldPosition();
+		RN::Vector3 to = World::GetSharedInstance()->GetPlayer()->GetWorldPosition() + RN::Vector3(0.0f, 1.0f, 0.0f);
+		RN::Vector3 diff = to - from;
+		float distanceToPlayer = diff.GetLength();
+		if(distanceToPlayer < 2.5f)
+		{
+			RN::PhysXContactInfo hit;
+			hit.distance = -1.0f;
+			if(distanceToPlayer > 0.1f)
+			{
+				hit = World::GetSharedInstance()->GetPhysicsWorld()->CastRay(from, to, World::CollisionType::Level);
+			}
+			
+			if(hit.distance < -0.5f)
+				isTriggered = true;
+		}
+		
+		if((!isTriggered && _state == State::Automatic) || _state == State::Closed)
 		{
 			RN::Vector3 closeDirection = -_door->GetPosition();
 			if(closeDirection.GetLength() > delta)
@@ -44,7 +62,7 @@ namespace PZ
 			_body->SetKinematicTarget(GetWorldRotation().GetRotatedVector(closeDirection)+_door->GetWorldPosition(), GetWorldRotation());
 		}
 		
-		if((distanceToPlayer <= 3.0f && _state == State::Automatic) || _state == State::Opened)
+		if((isTriggered && _state == State::Automatic) || _state == State::Opened)
 		{
 			RN::Vector3 openDirection = _openOffset-_door->GetPosition();
 			if(openDirection.GetLength() > delta)
