@@ -139,7 +139,7 @@ namespace PZ
 		World *world = new World(_vrWindow, _window, false, 4, false);
 #else
 		SetupPreviewWindow();
-		World *world = new World(_vrWindow, _window, true, 8, false);
+		World *world = new World(_vrWindow, _window, false, 8, false);
 #endif
 
 		RN::SceneManager::GetSharedInstance()->AddScene(world);
