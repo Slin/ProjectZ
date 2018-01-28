@@ -138,9 +138,10 @@ namespace PZ
 		rotation = -rotation;
 
 		RN::Vector3 translation(0.0);
-		if (!_dead) {
-			translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 3.0f;
-			translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 3.0f;
+		if(!_dead)
+		{
+			translation.x = ((int)manager->IsControlToggling(RNCSTR("D")) - (int)manager->IsControlToggling(RNCSTR("A"))) * 2.0f;
+			translation.z = ((int)manager->IsControlToggling(RNCSTR("S")) - (int)manager->IsControlToggling(RNCSTR("W"))) * 2.0f;
 		}
 
 		if (_gamepad)
@@ -151,8 +152,8 @@ namespace PZ
 			{
 				RN::Vector2 left = leftAnalog->Downcast<RN::Value>()->GetValue<RN::Vector2>();
 				if (!_dead) {
-					translation.x += left.x * 3.0f;
-					translation.z += left.y * 3.0f;
+					translation.x += left.x * 2.0f;
+					translation.z += left.y * 2.0f;
 				}
 			}
 
