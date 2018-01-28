@@ -11,6 +11,7 @@
 
 #include <Rayne.h>
 #include "RNPhysXWorld.h"
+#include "RNSteamAudioWorld.h"
 
 namespace PZ
 {
@@ -24,6 +25,7 @@ namespace PZ
 		virtual void SetActive(bool active);
 		
 		void SetAction(std::function< void(bool) > action);
+		void SetNeedsKey(bool needsKey) {_needsKey = needsKey;}
 		
 	protected:
 		bool _isActive;
@@ -33,6 +35,8 @@ namespace PZ
 		std::function< void(bool) > _action;
 		bool _isKeyPressed;
 		bool _needsReset;
+		bool _needsKey;
+		RN::SteamAudioSource *_lockedSource;
 	};
 }
 

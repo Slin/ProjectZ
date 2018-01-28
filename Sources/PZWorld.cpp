@@ -246,6 +246,7 @@ namespace PZ
 		
 		switch_ = new ButtonSwitch();
 		AddNode(switch_);
+		switch_->SetNeedsKey(true);
 		switch_->SetWorldPosition(RN::Vector3(-4.5f, 1.0f, 3.1f));
 		switch_->SetWorldRotation(RN::Quaternion::WithEulerAngle(RN::Vector3(180.0f, 0.0f, 0.0f)));
 		switch_->SetAction([door](bool active){

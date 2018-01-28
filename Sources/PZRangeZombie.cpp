@@ -130,7 +130,7 @@ namespace PZ
 		if(!_following)
 		{
 			_idleTimer -= delta;
-			if(_idleTimer < 0.0 && (_mouthSource->IsPlaying() || _mouthSource->HasEnded()))
+			if(_idleTimer < 0.0 && (!_mouthSource->IsPlaying() || _mouthSource->HasEnded()))
 			{
 				_idleTimer = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomFloatRange(10, 20);
 				int idleSoundIndex = RN::RandomNumberGenerator::GetSharedGenerator()->GetRandomInt32Range(0, _idleSounds->GetCount());

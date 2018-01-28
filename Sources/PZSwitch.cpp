@@ -11,9 +11,15 @@
 
 namespace PZ
 {
-	Switch::Switch() : _isActive(false), _needsReset(false)
+	Switch::Switch() : _isActive(false), _needsReset(false), _needsKey(false)
 	{
-		
+		RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/locked.ogg"));
+		_lockedSource = new RN::SteamAudioSource(audioAsset, false);
+		_lockedSource->SetTimeOfFlight(false);
+		_lockedSource->SetRepeat(false);
+		_lockedSource->SetRadius(0.0f);
+		AddChild(_lockedSource->Autorelease());
+		_lockedSource->SetPosition(RN::Vector3(0.0f, 0.0f, -0.03f));
 	}
 	
 	Switch::~Switch()
@@ -53,7 +59,22 @@ namespace PZ
 				if(World::GetSharedInstance()->GetPlayer()->IsActivatePressed())
 				{
 					if(!_isKeyPressed)
-						SetActive(!_isActive);
+					{
+						bool hasKey = false;
+						if(_needsKey && !hasKey)
+						{
+							if((!_lockedSource->IsPlaying() || _lockedSource->HasEnded()))
+							{
+								_lockedSource->SetGain(0.5f);
+								_lockedSource->Seek(0.0);
+								_lockedSource->Play();
+							}
+						}
+						else
+						{
+							SetActive(!_isActive);
+						}
+					}
 					
 					_isKeyPressed = true;
 				}
