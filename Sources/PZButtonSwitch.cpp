@@ -18,6 +18,8 @@ namespace PZ
 		
 		_button = new RN::Entity(RN::Model::WithName(RNCSTR("models/objects/button_switch_button.sgm")));
 		AddChild(_button->Autorelease());
+		
+		_raycastOffset.z = -0.1f;
 	}
 	
 	ButtonSwitch::~ButtonSwitch()

@@ -19,7 +19,7 @@ namespace PZ
 		
 		RN::PhysXMaterial *physicsMaterial = new RN::PhysXMaterial();
 		_body = new RN::PhysXDynamicBody(RN::PhysXCompoundShape::WithModel(model, physicsMaterial, false), 1.0f);
-		_body->SetCollisionFilter(World::CollisionType::Level, World::CollisionType::All);
+		_body->SetCollisionFilter(World::CollisionType::Doors, World::CollisionType::All);
 		_body->SetEnableKinematic(true);
 		_door->AddAttachment(_body);
 	}

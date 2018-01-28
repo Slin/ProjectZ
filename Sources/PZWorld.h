@@ -32,6 +32,7 @@ namespace PZ
 		{
 			Level = 1 << 0,
 			Character = 1 << 1,
+			Doors = 1 << 2,
 			
 			All = 0xffffffff
 		};
@@ -84,6 +85,7 @@ namespace PZ
 		RN::Entity *_uiEntity;
 		RN::Vector3 _uiPlayerPositionBackup;
 		RN::Quaternion _uiPlayerRotationBackup;
+		RN::Vector3 _currentFadeColor;
 		
 		bool _isPaused;
 

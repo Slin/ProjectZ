@@ -27,6 +27,7 @@ namespace PZ
 		
 	protected:
 		bool _isActive;
+		RN::Vector3 _raycastOffset;
 
 	private:
 		std::function< void(bool) > _action;

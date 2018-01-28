@@ -20,6 +20,7 @@ namespace PZ
 		AddChild(_stick->Autorelease());
 		
 		_stick->SetRotation(RN::Vector3(0.0f, 0.0f, 90.0f));
+		_raycastOffset.x = -0.1f;
 	}
 	
 	StickSwitch::~StickSwitch()

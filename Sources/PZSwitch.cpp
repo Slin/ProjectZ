@@ -25,19 +25,31 @@ namespace PZ
 	{
 		RN::SceneNode::Update(delta);
 		
-		float distanceToPlayer = (World::GetSharedInstance()->GetPlayer()->GetWorldPosition()-GetWorldPosition()).GetLength();
-		if(distanceToPlayer < 2.0f)
+		RN::Vector3 from = GetWorldPosition()+GetWorldRotation().GetRotatedVector(_raycastOffset);
+		RN::Vector3 to = World::GetSharedInstance()->GetPlayer()->GetWorldPosition() + RN::Vector3(0.0f, 1.0f, 0.0f);
+		RN::Vector3 diff = to - from;
+		float distanceToPlayer = diff.GetLength();
+		if(distanceToPlayer < 1.0f)
 		{
-			if(World::GetSharedInstance()->GetPlayer()->IsActivatePressed())
+			RN::PhysXContactInfo hit;
+			hit.distance = -1.0f;
+			if(distanceToPlayer > 0.1f)
 			{
-				if(!_isKeyPressed)
-					SetActive(!_isActive);
-				
-				_isKeyPressed = true;
+				hit = World::GetSharedInstance()->GetPhysicsWorld()->CastRay(from, to, World::CollisionType::Level);
 			}
-			else
+			if(hit.distance < -0.5f)
 			{
-				_isKeyPressed = false;
+				if(World::GetSharedInstance()->GetPlayer()->IsActivatePressed())
+				{
+					if(!_isKeyPressed)
+						SetActive(!_isActive);
+					
+					_isKeyPressed = true;
+				}
+				else
+				{
+					_isKeyPressed = false;
+				}
 			}
 		}
 	}

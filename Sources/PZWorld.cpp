@@ -225,16 +225,16 @@ namespace PZ
 			}
 
 			_audioWorld->UpdateScene();
-
-/*			RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/neverstop.ogg"));
+			
+			RN::AudioAsset *audioAsset = RN::AudioAsset::WithName(RNCSTR("audio/elevatormusic.ogg"));
 			RN::SteamAudioSource *musicSource = new RN::SteamAudioSource(audioAsset, false);
-			musicSource->SetWorldPosition(RN::Vector3(1.6f, 1.0f, -1.2f));
-			musicSource->SetTimeOfFlight(true);
+			musicSource->SetWorldPosition(RN::Vector3(26.9f, 1.0f, -3.5f));
+			musicSource->SetTimeOfFlight(false);
 			musicSource->Play();
 			musicSource->SetRepeat(true);
 			musicSource->SetRadius(0.0f);
-//			musicSource->SetGain(0.1f);
-			AddNode(musicSource);*/
+			musicSource->SetGain(0.3f);
+			AddNode(musicSource);
 		}
 		
 		Switch *switch_;
@@ -242,7 +242,7 @@ namespace PZ
 		Door *door = new Door(RNCSTR("models/levels/door1.sgm"), RN::Vector3(1.8f, 0.0f, 0.0f));
 		AddNode(door);
 		door->SetState(Door::State::Closed);
-		door->SetWorldPosition(RN::Vector3(-6.0f, 1.0f, 3.0f));
+		door->SetWorldPosition(RN::Vector3(-6.0f, 1.25f, 3.0f));
 		
 		switch_ = new ButtonSwitch();
 		AddNode(switch_);
@@ -255,7 +255,7 @@ namespace PZ
 		door = new Door(RNCSTR("models/levels/door2.sgm"), RN::Vector3(0.0f, 0.0f, -1.8f));
 		AddNode(door);
 		door->SetState(Door::State::Closed);
-		door->SetWorldPosition(RN::Vector3(8.0f, 1.0f, -3.0f));
+		door->SetWorldPosition(RN::Vector3(8.0f, 1.25f, -3.0f));
 		
 		switch_ = new ButtonSwitch();
 		AddNode(switch_);
@@ -268,7 +268,7 @@ namespace PZ
 		door = new Door(RNCSTR("models/levels/door3.sgm"), RN::Vector3(1.8f, 0.0f, 0.0f));
 		AddNode(door);
 		door->SetState(Door::State::Closed);
-		door->SetWorldPosition(RN::Vector3(2.0f, 1.0f, 3.0f));
+		door->SetWorldPosition(RN::Vector3(2.0f, 1.25f, 3.0f));
 		
 		switch_ = new ButtonSwitch();
 		AddNode(switch_);
@@ -280,20 +280,20 @@ namespace PZ
 		
 		door = new Door(RNCSTR("models/levels/door4.sgm"), RN::Vector3(0.0f, 0.0f, -0.84f));
 		AddNode(door);
-		door->SetWorldPosition(RN::Vector3(24.0f, 1.0f, -4.0f));
+		door->SetWorldPosition(RN::Vector3(24.0f, 1.25f, -4.0f));
 		
 		door = new Door(RNCSTR("models/levels/door5.sgm"), RN::Vector3(0.0f, 0.0f, 0.84f));
 		AddNode(door);
-		door->SetWorldPosition(RN::Vector3(24.0f, 1.0f, -3.0f));
+		door->SetWorldPosition(RN::Vector3(24.0f, 1.25f, -3.0f));
 		
 		door = new Door(RNCSTR("models/levels/door6.sgm"), RN::Vector3(0.0f, 0.0f, -1.8f));
 		AddNode(door);
-		door->SetWorldPosition(RN::Vector3(8.0f, 1.0f, 16.0f));
+		door->SetWorldPosition(RN::Vector3(8.0f, 1.25f, 16.0f));
 		
 		door = new Door(RNCSTR("models/levels/door7.sgm"), RN::Vector3(2.0f, 0.0f, 0.0f));
 		door->SetState(Door::State::Closed);
 		AddNode(door);
-		door->SetWorldPosition(RN::Vector3(21.0f, 1.0f, -9.0f));
+		door->SetWorldPosition(RN::Vector3(21.0f, 1.25f, -9.0f));
 		
 		
 		switch_ = new StickSwitch();
@@ -333,7 +333,14 @@ namespace PZ
 	void World::UpdateForWindowSize() const
 	{
 		if(!_vrCamera || !_window)
+		{
+			if(_copyEyeToScreenMaterial)
+			{
+				_copyEyeToScreenMaterial->SetDiffuseColor(RN::Color(0.0f, 0.0f, 1.0f, 1.0f));
+				_copyEyeToScreenMaterial->SetAmbientColor(RN::Color(_currentFadeColor.x, _currentFadeColor.y, _currentFadeColor.z, 1.0f));
+			}
 			return;
+		}
 
 		RN::Vector2 eyeResolution((_vrWindow->GetSize().x - _vrWindow->GetEyePadding()) / 2.0f, _vrWindow->GetSize().y);
 		RN::Vector2 windowResolution(_window->GetSize());
@@ -357,6 +364,7 @@ namespace PZ
 		}
 
 		_copyEyeToScreenMaterial->SetDiffuseColor(RN::Color(sourceRectangle.x / _vrWindow->GetSize().x, sourceRectangle.y / _vrWindow->GetSize().y, (sourceRectangle.z / _vrWindow->GetSize().x), (sourceRectangle.w / _vrWindow->GetSize().y)));
+		_copyEyeToScreenMaterial->SetAmbientColor(RN::Color(_currentFadeColor.x, _currentFadeColor.y, _currentFadeColor.z, 1.0f));
 	}
 
 	void World::WillUpdate(float delta)
@@ -385,7 +393,8 @@ namespace PZ
 			Exit();
 		}
 
-		if (_fadingIn || _fadingOut) {
+		if(_fadingIn || _fadingOut)
+		{
 			float fadeDelta = delta;
 			if (fadeDelta > 0.03f) {
 				fadeDelta = 0.03f;
@@ -403,7 +412,8 @@ namespace PZ
 			if (_fadingOut) {
 				percent = 1.0f - percent;
 			}
-			_copyEyeToScreenMaterial->SetAmbientColor(RN::Color(percent, percent, percent, 1.0f));
+			
+			_currentFadeColor = RN::Vector3(percent);
 		}
 	}
 
@@ -414,7 +424,7 @@ namespace PZ
 			for (float y = 0.7f; y < 1.4f; y += 0.3f) {
 				for (float z = -0.3f; z < 0.4f; z += 0.3f) {
 					RN::Vector3 pos = playerPos + RN::Vector3(x, y, z);
-					RN::PhysXContactInfo info = _physicsWorld->CastRay(from, pos, CollisionType::Level);
+					RN::PhysXContactInfo info = _physicsWorld->CastRay(from, pos, CollisionType::Level|CollisionType::Doors);
 					if (info.distance < 0) {
 						return true;
 					}

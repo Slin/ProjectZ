@@ -19,7 +19,7 @@ namespace PZ
 		RN::PhysXMaterial *physicsMaterial = new RN::PhysXMaterial();
 		_controller = new RN::PhysXKinematicController(0.25f, 1.1f, physicsMaterial->Autorelease());
 		_controller->SetPositionOffset(_controller->GetFeetOffset());
-		_controller->SetCollisionFilter(World::CollisionType::Character, World::CollisionType::Level | World::CollisionType::Character);
+		_controller->SetCollisionFilter(World::CollisionType::Character, World::CollisionType::All);
 		AddAttachment(_controller);
 		
 		RN::Array *gamepads = RN::InputManager::GetSharedInstance()->GetDevicesWithCategories(RN::InputDevice::Category::Gamepad);
