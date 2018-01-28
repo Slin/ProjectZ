@@ -201,6 +201,13 @@ namespace PZ
 		else if (startState == 15) {
 			if (world->IsFadeDone()) {
 				world->HideUI();
+				if (_deathSequence >= 1000) {
+					SetPosition(_spawnPoint);
+					SetRotation(_spawnRotation);
+					_dead = false;
+					_deathWasSuccess = false;
+					_hasIDCard = false;
+				}
 				world->Fade(true, fadeSeconds);
 				startState++;
 			}
@@ -257,7 +264,13 @@ namespace PZ
 			if (world->IsFadeDone()) {
 				world->ShowUI(RNCSTR("start.png"));
 				world->Fade(true, fadeSeconds);
-				_deathSequence++;
+				if (_deathWasSuccess) {
+					_deathSequence = 1000;
+					startState = 1;
+				}
+				else {
+					_deathSequence++;
+				}
 			}
 			return;
 		}
